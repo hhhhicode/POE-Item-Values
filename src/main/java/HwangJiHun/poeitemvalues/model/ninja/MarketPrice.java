@@ -1,5 +1,6 @@
 package HwangJiHun.poeitemvalues.model.ninja;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,13 +19,20 @@ import java.util.Date;
 public class MarketPrice {
 
     private Integer id;
-    private Integer league_id;
-    private Integer pay_currency_id;
-    private Integer get_currency_id;
-    private Date sample_time_utc;
+    @JsonProperty(value = "league_id")
+    private Integer leagueId;
+    @JsonProperty(value = "pay_currency_id")
+    private Integer payCurrencyId;
+    @JsonProperty(value = "get_currency_id")
+    private Integer getCurrencyId;
+    @JsonProperty(value = "sample_time_utc")
+    private Date sampleTimeUtc;
     private Integer count;
     private Double value;
-    private Integer data_point_count;
-    private Boolean includes_secondary;
-    private Integer listing_count;
+    @JsonProperty(value = "data_point_count")
+    private Integer dataPointCount;
+    @JsonProperty(value = "includes_secondary")
+    private Boolean includesSecondary;
+    @JsonProperty(value = "listing_count")
+    private Integer listingCount;
 }

@@ -5,51 +5,82 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <title>Title</title>
 </head>
-<body>
-<div class="d-grid gap-2" style="user-select: auto;">
-    <button class="btn btn-lg btn-primary" type="button" style="user-select: auto;">Block button</button>
-    <button class="btn btn-lg btn-primary" type="button" style="user-select: auto;">Block button</button>
-</div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="user-select: auto;">
-    <div class="container-fluid" style="user-select: auto;">
-        <a class="navbar-brand" href="#" style="user-select: auto;">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="user-select: auto;">
-            <span class="navbar-toggler-icon" style="user-select: auto;"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor01" style="user-select: auto;">
-            <ul class="navbar-nav me-auto" style="user-select: auto;">
-                <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link active" href="#" style="user-select: auto;">Home
-                        <span class="visually-hidden" style="user-select: auto;">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link" href="#" style="user-select: auto;">Features</a>
-                </li>
-                <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link" href="#" style="user-select: auto;">Pricing</a>
-                </li>
-                <li class="nav-item" style="user-select: auto;">
-                    <a class="nav-link" href="#" style="user-select: auto;">About</a>
-                </li>
-                <li class="nav-item dropdown" style="user-select: auto;">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="user-select: auto;">Dropdown</a>
-                    <div class="dropdown-menu" style="user-select: auto;">
-                        <a class="dropdown-item" href="#" style="user-select: auto;">Action</a>
-                        <a class="dropdown-item" href="#" style="user-select: auto;">Another action</a>
-                        <a class="dropdown-item" href="#" style="user-select: auto;">Something else here</a>
-                        <div class="dropdown-divider" style="user-select: auto;"></div>
-                        <a class="dropdown-item" href="#" style="user-select: auto;">Separated link</a>
+<body style="display: grid;">
+<div class="mainContainer" style="user-select: auto; min-height: 100vh; padding: .5rem">
+    <section style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: .5rem">
+        <nav></nav>
+        <div style="display: grid; border-radius: .375rem">
+            <main style="overflow: auto;">
+                <section style="display: grid; grid-template-rows: auto minmax(0px, 1fr); background-clip: padding-box; overflow: hidden; border-radius: .375rem">
+                    <div style="padding: .75rem; overflow: auto; ">
+                        <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1.5rem">
+                            <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1rem">
+                                <div></div>
+                                <div>
+                                    <small style="font-style: italic; font-size: 1rem; display: block; text-align: right; padding-block: .25rem">(scroll to see more)</small>
+                                    <div style="overflow: auto;">
+                                        <table class="table table-hover"
+                                               style="user-select: auto; width: 100%;"
+                                               th:object="${currencyOverviewDtos}">
+                                            <thead style="user-select: auto;">
+                                            <tr style="user-select: auto;">
+                                                <td class="empty"></td>
+                                                <th colspan="5">Buy</th>
+                                                <th colspan="5">Sell</th>
+                                            </tr>
+                                            <tr style="user-select: auto;">
+                                                <th style="user-select: auto;">Name</th>
+                                                <th style="user-select: auto;" colspan="3">Buying price</th>
+                                                <th style="user-select: auto;">Last 7 days</th>
+                                                <th style="user-select: auto;" colspan="3">Selling price</th>
+                                                <th style="user-select: auto;">Last 7 days</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody style="user-select: auto;">
+                                            <tr class="table-light" style="user-select: auto;"
+                                                th:each="currency : ${currencyOverviewDtos}">
+                                                <td style="user-select: auto;">
+                                                    <div style="display: flex; flex-direction: row;">
+                                                        <div>
+                                                            <img th:src="${currency.getIcon()}">
+                                                        </div>
+                                                        <a th:href="@{/}" style="display: flex; justify-content: center; align-items: center">
+                                                            <span th:text="${currency.getCurrencyTypeName()}">Mirror of kalandra</span>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                <span th:title="|${currency.getReceiveValue()}|"
+                      style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem; justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
+                    <span th:text="|${currency.getReceiveValue()}|" style="text-align: center"></span>
+                    <img th:title="${currency.getPayCurrencyName()}"
+                         width="100%" height="auto"
+                         th:src="${currency.getPayCurrencyIcon()}"
+                         th:alt="${currency.getPayCurrencyName()}">
+                </span>
+                                                </td>
+                                                <td style="user-select: auto;">Column content</td>
+                                                <td style="user-select: auto;">Column content</td>
+                                                <td style="user-select: auto;">Column content</td>
+                                                <td style="user-select: auto;">Column content</td>
+                                                <td style="user-select: auto;">Column content</td>
+                                                <td style="user-select: auto;">Column content</td>
+                                                <td style="user-select: auto;">Column content</td>
+                                                <td style="user-select: auto;">Column content</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </li>
-            </ul>
-            <form class="d-flex" style="user-select: auto;">
-                <input class="form-control me-sm-2" type="text" placeholder="Search" style="user-select: auto;">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit" style="user-select: auto;">Search</button>
-            </form>
+                </section>
+            </main>
         </div>
-    </div>
-</nav>
+    </section>
+</div>
 <script src="/js/bootstrap.bundle.min.js"></script>
 
 </body>

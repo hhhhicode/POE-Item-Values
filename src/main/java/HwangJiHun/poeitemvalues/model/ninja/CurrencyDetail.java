@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CurrencyDetail {
 
-    private String id;
+    private Integer id;
     private String icon;
     private String name;
     private String tradeId;
