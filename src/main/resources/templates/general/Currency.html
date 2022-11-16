@@ -25,7 +25,7 @@
                                         <!--CurrencyTable-->
                                         <table class="table table-hover"
                                                style="user-select: auto; width: 100%;"
-                                               th:object="${currencyOverviewDtos}">
+                                               th:object="${currencyOverviewDtoList}">
 
                                             <!--Table Head-->
                                             <thead style="user-select: auto;">
@@ -46,7 +46,7 @@
                                             <!--Table Body-->
                                             <tbody style="user-select: auto;">
                                                 <tr class="table-light" style="user-select: auto;"
-                                                    th:each="currency : ${currencyOverviewDtos}">
+                                                    th:each="currency : ${currencyOverviewDtoList}">
 
                                                     <!--Name-->
                                                     <td style="user-select: auto;"  >
@@ -54,7 +54,7 @@
                                                             <div>
                                                                 <img th:src="${currency.getIcon()}">
                                                             </div>
-                                                            <a th:href="@{/}"
+                                                            <a th:href="@{/static}"
                                                                style="display: flex; justify-content: center; align-items: center">
                                                                 <span th:text="${currency.getCurrencyTypeName()}">name</span>
                                                             </a>
