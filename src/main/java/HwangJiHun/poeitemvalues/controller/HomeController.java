@@ -17,9 +17,14 @@ public class HomeController {
     private final NinjaService ninjaService;
 
     @GetMapping("/")
-    public String home(Model model) throws IOException {
+    public String home() {
 
 
+        return "/home";
+    }
+
+    @GetMapping("/general/currency")
+    public String currency(Model model) throws IOException {
         List<CurrencyOverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverview();
 
 

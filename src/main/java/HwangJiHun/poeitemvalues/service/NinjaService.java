@@ -38,8 +38,8 @@ public class NinjaService {
                                             line,
                                             idCurrencyDetailMap.get(receive.getPayCurrencyId()),
                                             idCurrencyDetailMap.get(receive.getGetCurrencyId()),
-                                            getCurrencyDetail(pay, idCurrencyDetailMap, pay.getPayCurrencyId()),
-                                            getCurrencyDetail(pay, idCurrencyDetailMap, pay.getGetCurrencyId()),
+                                            pay != null ? getCurrencyDetail(pay, idCurrencyDetailMap, pay.getPayCurrencyId()) : null,
+                                            pay != null ? getCurrencyDetail(pay, idCurrencyDetailMap, pay.getGetCurrencyId()) : null,
                                             (int) Math.round(line.getReceiveSparkLine().getTotalChange()),
                                             (int) Math.round(line.getPaySparkLine().getTotalChange()),
                                             receive.getValue(),
@@ -52,11 +52,7 @@ public class NinjaService {
     }
 
     private static CurrencyDetail getCurrencyDetail(MarketPrice pay, Map<Integer, CurrencyDetail> idCurrencyDetailMap, Integer pay1) {
-        CurrencyDetail sellGetCurrencyDetail = null;
-        if (pay != null) {
-            sellGetCurrencyDetail = idCurrencyDetailMap.get(pay1);
-        }
-        return sellGetCurrencyDetail;
+        return idCurrencyDetailMap.get(pay1);
     }
 
     private CurrencyOverviewDto getCurrencyOverviewDto(
