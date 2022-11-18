@@ -21,8 +21,11 @@ public class HomeController {
     public String home(Model model) throws IOException {
 
         List<TotalChangeTop5Currency> cardsDataList = ninjaService.getCardsData();
+        for (TotalChangeTop5Currency totalChangeTop5Currency : cardsDataList) {
+            System.out.println("totalChangeTop5Currency = " + totalChangeTop5Currency);
+        }
 
-        model.addAttribute("CardsDataList", cardsDataList);
+        model.addAttribute("cardsDataList", cardsDataList);
 
         return "/home";
     }
