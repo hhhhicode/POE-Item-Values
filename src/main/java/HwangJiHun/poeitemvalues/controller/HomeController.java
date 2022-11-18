@@ -1,6 +1,7 @@
 package HwangJiHun.poeitemvalues.controller;
 
 import HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto;
+import HwangJiHun.poeitemvalues.model.ninja.dto.TotalChangeTop5Currency;
 import HwangJiHun.poeitemvalues.service.NinjaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,11 @@ public class HomeController {
     private final NinjaService ninjaService;
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) throws IOException {
 
+        List<TotalChangeTop5Currency> cardsDataList = ninjaService.getCardsData();
+
+        model.addAttribute("CardsDataList", cardsDataList);
 
         return "/home";
     }
