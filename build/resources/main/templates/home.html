@@ -2,8 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
     <title>Home</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/chart-line.js"></script>
 </head>
 <body>
 
@@ -24,7 +28,7 @@
         <ul th:replace="~{common/common_side_bar}"></ul>
 
         <!-- Main Content -->
-        <div style="display: flex; flex: 1 0 auto;">
+        <div style="display: flex; flex: 1 0 auto; flex-direction: column">
 
             <!--Cards-->
             <div style="max-width: 100%">

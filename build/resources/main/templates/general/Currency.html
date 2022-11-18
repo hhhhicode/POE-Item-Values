@@ -2,10 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <title>Currency</title>
+
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/chart-line.js"></script>
 </head>
 <body style="display: grid;">
+
 <div class="mainContainer" style="user-select: auto; min-height: 100vh; padding: .5rem">
     <section
             style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: .5rem">
@@ -89,14 +94,63 @@
                                                     </td>
 
                                                     <!--Last 7 days-->
-                                                    <td style="user-select: auto;">
-                                                        <span style="display: flex; flex-direction: row">
-                                                            <div style="background-color: transparent; width: 60px; height: 22px;">
-                                                                <svg style="box-sizing: border-box"; overflow="hidden">
-                                                                    <g>
-
-                                                                    </g>
-                                                                </svg>
+                                                    <td style="user-select: auto; justify-content: center; align-items: center">
+                                                        <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
+                                                            <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
+                                                                <canvas th:id="${currency.getBuyChartId()}">GRAPH</canvas>
+                                                                <script th:inline="javascript">
+                                                                    new Chart(document.getElementById([[${currency.getBuyChartId()}]]), {
+                                                                        type: 'line',
+                                                                        data: {
+                                                                            labels: ["1", "2", "3", "4", "5", "6", "7"],
+                                                                            datasets: [{
+                                                                                label: "Dataset #1",
+                                                                                backgroundColor: "rgba(255,99,132,0.2)",
+                                                                                borderColor: "rgba(255,99,132,1)",
+                                                                                borderWidth: 2,
+                                                                                hoverBackgroundColor: "rgba(255,99,132,0.4)",
+                                                                                hoverBorderColor: "rgba(255,99,132,1)",
+                                                                                fill: 'start',
+                                                                                data: [[${currency.getBuyChartDataList()}]],
+                                                                            }]
+                                                                        },
+                                                                        options: {
+                                                                            plugins: {
+                                                                                filler: {
+                                                                                    propagate: false,
+                                                                                },
+                                                                                legend: {
+                                                                                    display: false
+                                                                                },
+                                                                            },
+                                                                            elements: {
+                                                                                point: {
+                                                                                    radius: 0,
+                                                                                },
+                                                                                line: {
+                                                                                    tension: 0.4,
+                                                                                },
+                                                                            },
+                                                                            interaction: {
+                                                                                intersect: false,
+                                                                            },
+                                                                            scales: {
+                                                                                x: {
+                                                                                    grid: {
+                                                                                        display: false,
+                                                                                    },
+                                                                                    display: false,
+                                                                                },
+                                                                                y: {
+                                                                                    grid: {
+                                                                                        display: false,
+                                                                                    },
+                                                                                    display: false,
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                    });
+                                                                </script>
                                                             </div>
                                                             <span th:text="${currency.getBuyTotalChange()}" style="text-align: center"></span>
                                                         </span>
@@ -108,7 +162,7 @@
                                                     <!--Selling Price-->
                                                     <th:block th:if="${currency.getSellPayValue() == null}">
                                                         <td colspan="3"
-                                                            style="text-align: center;"
+                                                            style="text-align: center; vertical-align: middle"
                                                             th:text="|데이터 불충분|"></td>
                                                     </th:block>
                                                     <th:block th:unless="${currency.getSellPayValue() == null}">
@@ -141,12 +195,73 @@
 
 
                                                     <!--Last 7 days-->
-                                                    <td style="user-select: auto;">
-                                                        <span style="display: flex; flex-direction: row">
-                                                            <spab th:text="GRAPH"></spab>
+                                                    <th:block th:if="${currency.getSellChartDataList().size() == 0}">
+                                                        <td style="text-align: center; vertical-align: middle"
+                                                            th:text="|데이터 불충분|"></td>
+                                                    </th:block>
+                                                    <th:block th:unless="${currency.getSellChartDataList().size() == 0}">
+                                                        <td style="user-select: auto; justify-content: center; align-items: center">
+                                                        <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
+                                                            <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
+                                                                <canvas th:id="${currency.getSellChartId()}">GRAPH</canvas>
+                                                                <script th:inline="javascript">
+                                                                    new Chart(document.getElementById([[${currency.getSellChartId()}]]), {
+                                                                        type: 'line',
+                                                                        data: {
+                                                                            labels: ["1", "2", "3", "4", "5", "6", "7"],
+                                                                            datasets: [{
+                                                                                label: "Dataset #1",
+                                                                                backgroundColor: "rgba(255,99,132,0.2)",
+                                                                                borderColor: "rgba(255,99,132,1)",
+                                                                                borderWidth: 2,
+                                                                                hoverBackgroundColor: "rgba(255,99,132,0.4)",
+                                                                                hoverBorderColor: "rgba(255,99,132,1)",
+                                                                                fill: 'start',
+                                                                                data: [[${currency.getSellChartDataList()}]],
+                                                                            }]
+                                                                        },
+                                                                        options: {
+                                                                            plugins: {
+                                                                                filler: {
+                                                                                    propagate: false,
+                                                                                },
+                                                                                legend: {
+                                                                                    display: false
+                                                                                },
+                                                                            },
+                                                                            elements: {
+                                                                                point: {
+                                                                                    radius: 0,
+                                                                                },
+                                                                                line: {
+                                                                                    tension: 0.4,
+                                                                                },
+                                                                            },
+                                                                            interaction: {
+                                                                                intersect: false,
+                                                                            },
+                                                                            scales: {
+                                                                                x: {
+                                                                                    grid: {
+                                                                                        display: false,
+                                                                                    },
+                                                                                    display: false,
+                                                                                },
+                                                                                y: {
+                                                                                    grid: {
+                                                                                        display: false,
+                                                                                    },
+                                                                                    display: false,
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                    });
+                                                                </script>
+                                                            </div>
                                                             <span th:text="${currency.getSellTotalChange()}" style="text-align: center"></span>
                                                         </span>
-                                                    </td>
+                                                        </td>
+                                                    </th:block>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -160,7 +275,5 @@
         </div>
     </section>
 </div>
-<script src="/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

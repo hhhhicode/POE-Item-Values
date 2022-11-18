@@ -4,6 +4,7 @@ import HwangJiHun.poeitemvalues.model.ninja.*;
 import HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto;
 import HwangJiHun.poeitemvalues.repository.NinjaRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NinjaService {
@@ -23,6 +25,7 @@ public class NinjaService {
         CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview();
         Map<Integer, CurrencyDetail> idCurrencyDetailMap = getIdCurrencyDetailMap(currencyOverview.getCurrencyDetails());
         List<CurrencyOverviewDto> currencyOverviewDtoList = new ArrayList<>();
+        Map<String, List<Double>> chartDataMap = new HashMap<>();
 
         List<Currency> lines = currencyOverview.getLines();
         for (Currency line : lines) {
@@ -46,8 +49,8 @@ public class NinjaService {
                                             pay != null ? 1 / pay.getValue() : null
                                     )
                     );
+            chartDataMap.put(line.getCurrencyTypeName(), line.getReceiveSparkLine().getData());
         }
-
         return currencyOverviewDtoList;
     }
 
@@ -78,9 +81,9 @@ public class NinjaService {
                         buyValue >= 1000 ?
                                 (double) Math.round(buyValue / 1000 * 10) / 10 + "k" :
                                 String.valueOf((double) (
-                                                Math.round(buyValue * 10) / 10 >= 1 ?
-                                                        Math.round(buyValue * 10) / 10 :
-                                                        1
+                                        buyValue >= 1 ?
+                                                (double) Math.round(buyValue * 10) / 10 :
+                                                1
                                         )
                                 ),
                         buyPayCurrencyDetail.getIcon(),
@@ -92,6 +95,8 @@ public class NinjaService {
                         buyGetCurrencyDetail.getIcon(),
 
                         /*Buying Price Last 7 days*/
+                        "buy" + line.getCurrencyTypeName(),
+                        line.getReceiveSparkLine().getData(),
                         buySparkLineTotalChange > 0 ?
                                 "+" + buySparkLineTotalChange + "%" :
                                 buySparkLineTotalChange + "%",
@@ -118,37 +123,12 @@ public class NinjaService {
                         sellGetCurrencyDetail != null ? sellGetCurrencyDetail.getIcon() : null,
 
                         /*Selling Price Last 7 days*/
+                        "sell" + line.getCurrencyTypeName(),
+                        line.getPaySparkLine().getData(),
                         sellSparkLineTotalChange > 0 ?
                                 "+" + sellSparkLineTotalChange + "%" :
                                 sellSparkLineTotalChange + "%"
                 );
-    }
-
-    private static void getSvgData(SparkLine buySparkLine) {
-        Double svgWidth = 58d;
-        Double svgHeight = 20d;
-        Double svgSize = 18d;
-        List<Double> svgDataList = buySparkLine.getData();
-        List<Double> convertSvgDataList = new ArrayList<>();
-        List<Double> xList = new ArrayList<>();
-        List<Double> yList = new ArrayList<>();
-        Double intervalX = svgWidth / svgSize;
-        Double valueRange = svgDataList.stream().max(Double::compareTo).get() - svgDataList.stream().min(Double::compareTo).get();
-        for (Double svgData : svgDataList) {
-            convertSvgDataList.add(svgData * 22 / valueRange);
-        }
-
-        for (int i = 1; i < convertSvgDataList.size(); i++) {
-            for (int j = 1; j <= 3; j++) {
-                Double diffHeight = convertSvgDataList.get(i) - convertSvgDataList.get(i - 1);
-                yList.add(convertSvgDataList.get(i - 1) + diffHeight / 3 * j);
-            }
-        }
-        for (int i = 0; i < svgSize; i++) {
-            xList.add(i * intervalX);
-        }
-
-        //TODO Y에 마이너스 값이 있다. 마이너스가 있으면 안된다.
     }
 
     private Map<String, String> getCurrencyNameIconMap(List<CurrencyDetail> currencyDetails) {

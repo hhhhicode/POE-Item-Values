@@ -27,7 +27,6 @@ public class HomeController {
     public String currency(Model model) throws IOException {
         List<CurrencyOverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverview();
 
-
         model.addAttribute("currencyOverviewDtoList", currencyOverviewDtoList);
 
         return "/general/Currency";
