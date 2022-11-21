@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class TotalChangeTop5Currency {
+public class TotalChange5Currency {
 
     private final String currencyTypeName;
     private final String icon;

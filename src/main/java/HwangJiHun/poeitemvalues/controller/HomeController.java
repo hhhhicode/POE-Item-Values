@@ -1,7 +1,7 @@
 package HwangJiHun.poeitemvalues.controller;
 
-import HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto;
-import HwangJiHun.poeitemvalues.model.ninja.dto.TotalChangeTop5Currency;
+import HwangJiHun.poeitemvalues.model.ninja.dto.CardsDataListDto;
+import HwangJiHun.poeitemvalues.model.ninja.dto.OverviewDto;
 import HwangJiHun.poeitemvalues.service.NinjaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,22 +20,29 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) throws IOException {
 
-        List<TotalChangeTop5Currency> cardsDataList = ninjaService.getCardsData();
-        for (TotalChangeTop5Currency totalChangeTop5Currency : cardsDataList) {
-            System.out.println("totalChangeTop5Currency = " + totalChangeTop5Currency);
-        }
+        CardsDataListDto cardsDataListDto = ninjaService.getTop5CardsData();
 
-        model.addAttribute("cardsDataList", cardsDataList);
+        model.addAttribute("top5CardsDataList", cardsDataListDto.getTop5Cards());
+        model.addAttribute("bottom5CardsDataList", cardsDataListDto.getBottom5Cards());
 
         return "/home";
     }
 
     @GetMapping("/general/currency")
     public String currency(Model model) throws IOException {
-        List<CurrencyOverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverview();
+        List<OverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverview();
 
         model.addAttribute("currencyOverviewDtoList", currencyOverviewDtoList);
 
-        return "/general/Currency";
+        return "/Currency";
+    }
+
+    @GetMapping("/general/fragment")
+    public String fragment(Model model) throws IOException {
+        List<OverviewDto> fragmentOverviewDtoList = ninjaService.getFragmentOverview();
+
+        model.addAttribute("fragmentOverviewDtoList", fragmentOverviewDtoList);
+
+        return "/Fragment";
     }
 }

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragments Overview Table</title>
+</head>
+<body>
+<div th:fragment="general_fragment_overview_table(overviewDtoList)"
+     class="mainContainer"
+     style="user-select: auto; min-height: 100vh; padding: .5rem;">
+  <section
+          style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: .5rem">
+    <div style="display: grid; border-radius: .375rem">
+      <main style="overflow: auto;">
+        <section
+                style="display: grid; grid-template-rows: auto minmax(0px, 1fr); background-clip: padding-box; overflow: hidden; border-radius: .375rem">
+          <div style="padding: .75rem; overflow: auto; ">
+            <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1.5rem">
+              <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1rem">
+                <div></div>
+                <div>
+                  <small style="font-style: italic; font-size: 1rem; display: block; text-align: right; padding-block: .25rem">(scroll
+                    to see more)</small>
+                  <div style="overflow: auto;">
+                    <!--FragmentsTable-->
+                    <table class="table table-hover"
+                           style="user-select: auto; width: 100%;"
+                           th:object="${overviewDtoList}">
+
+                      <!--Table Head-->
+                      <thead style="user-select: auto;">
+                      <tr style="user-select: auto;">
+                        <td class="empty"></td>
+                        <th colspan="5" style="text-align: center">Buy</th>
+                        <th colspan="4" style="text-align: center">Sell</th>
+                      </tr>
+                      <tr style="user-select: auto;">
+                        <th style="user-select: auto;text-align: center;">Name</th>
+                        <th style="user-select: auto;text-align: center;" colspan="3">Buying price</th>
+                        <th style="user-select: auto;text-align: center;" colspan="2">Last 7 days</th>
+                        <th style="user-select: auto;text-align: center;" colspan="3">Selling price</th>
+                        <th style="user-select: auto;text-align: center;">Last 7 days</th>
+                      </tr>
+                      </thead>
+
+                      <!--Table Body-->
+                      <tbody style="user-select: auto;">
+                      <!--/*@thymesVar id="overviewDto" type="HwangJiHun.poeitemvalues.model.ninja.dto.OverviewDto"*/-->
+                      <tr class="table-light" style="user-select: auto;"
+                          th:each="overviewDto : ${overviewDtoList}">
+
+                        <!--Name-->
+                        <td style="user-select: auto;"  >
+                          <div style="display: flex; flex-direction: row;">
+                            <div>
+                              <img th:src="${overviewDto.getIcon()}">
+                            </div>
+                            <a th:href="@{/static}"
+                               style="display: flex; justify-content: center; align-items: center">
+                              <span th:text="${overviewDto.getCurrencyTypeName()}">name</span>
+                            </a>
+                          </div>
+                        </td>
+
+                        <!--Buying price-->
+                        <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                            <span th:title="|${overviewDto.getBuyPayValue()}|"
+                                  style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
+                                                             justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
+                                <span th:text="|${overviewDto.getBuyPayValue()}|" style="text-align: center">buying price 1</span>
+                                <img th:title="${overviewDto.getBuyPayCurrencyName()}"
+                                     width="100%" height="auto"
+                                     th:src="${overviewDto.getBuyPayCurrencyIcon()}"
+                                     th:alt="${overviewDto.getBuyPayCurrencyName()}">
+                            </span>
+                        </td>
+
+                        <td style="user-select: auto;"> → </td>
+
+                        <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                            <span th:title="|${overviewDto.getBuyReceiveValue()}|"
+                                  style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
+                                                             justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
+                                <span th:text="|${overviewDto.getBuyReceiveValue()}|" style="text-align: center">buying price 3</span>
+                                <img th:title="${overviewDto.getBuyGetCurrencyName()}"
+                                     width="100%" height="auto"
+                                     th:src="${overviewDto.getBuyGetCurrencyIcon()}"
+                                     th:alt="${overviewDto.getBuyGetCurrencyName()}">
+                            </span>
+                        </td>
+
+                        <!--Last 7 days-->
+                        <td style="user-select: auto; justify-content: center; align-items: center">
+                            <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
+                                <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
+                                    <canvas th:id="${overviewDto.getBuyChartId()}">GRAPH</canvas>
+                                    <script th:replace="~{common/common_linegrpah :: common_linegraph(${overviewDto.getBuyChartId()}, ${overviewDto.getBuyChartDataList()})}"></script>
+                                </div>
+                                <span th:text="${overviewDto.getBuyTotalChange()}" style="text-align: center"></span>
+                            </span>
+                        </td>
+                        <td style="user-select: auto;">
+                          <button th:text="Trade"></button>
+                        </td>
+
+                        <!--Selling Price-->
+                        <th:block th:if="${overviewDto.getSellPayValue() == null}">
+                          <td colspan="3"
+                              style="text-align: center; vertical-align: middle"
+                              th:text="|데이터 불충분|"></td>
+                        </th:block>
+                        <th:block th:unless="${overviewDto.getSellPayValue() == null}">
+                          <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                              <span th:title="|${overviewDto.getSellPayValue()}|"
+                                    style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
+                                                             justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
+                                  <span th:text="|${overviewDto.getSellPayValue()}|" style="text-align: center">sell price 1</span>
+                                  <img th:title="${overviewDto.getSellPayCurrencyName()}"
+                                       width="100%" height="auto"
+                                       th:src="${overviewDto.getSellPayCurrencyIcon()}"
+                                       th:alt="${overviewDto.getSellPayCurrencyName()}">
+                              </span>
+                          </td>
+
+                          <td style="user-select: auto;">→</td>
+
+                          <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                              <span th:title="|${overviewDto.getSellReceiveValue()}|"
+                                    style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
+                                                             justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
+                                  <span th:text="|${overviewDto.getSellReceiveValue()}|" style="text-align: center">sell price 1</span>
+                                  <img th:title="${overviewDto.getSellGetCurrencyName()}"
+                                       width="100%" height="auto"
+                                       th:src="${overviewDto.getSellGetCurrencyIcon()}"
+                                       th:alt="${overviewDto.getSellGetCurrencyName()}">
+                              </span>
+                          </td>
+                        </th:block>
+
+
+                        <!--Last 7 days-->
+                        <th:block th:if="${overviewDto.getSellChartDataList().size() == 0}">
+                          <td style="text-align: center; vertical-align: middle"
+                              th:text="|데이터 불충분|"></td>
+                        </th:block>
+                        <th:block th:unless="${overviewDto.getSellChartDataList().size() == 0}">
+                          <td style="user-select: auto; justify-content: center; align-items: center">
+                              <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
+                                  <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
+                                      <canvas th:id="${overviewDto.getSellChartId()}">GRAPH</canvas>
+                                      <script th:replace="~{common/common_linegrpah :: common_linegraph(${overviewDto.getBuyChartId()}, ${overviewDto.getBuyChartDataList()})}"></script>
+                                  </div>
+                                  <span th:text="${overviewDto.getSellTotalChange()}" style="text-align: center"></span>
+                              </span>
+                          </td>
+                        </th:block>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </section>
+</div>
+</body>
+</html>

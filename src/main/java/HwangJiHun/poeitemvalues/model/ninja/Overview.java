@@ -45,7 +45,7 @@ import java.util.List;
  * ---- translations
  */
 @Data
-public class CurrencyOverview {
+public class Overview {
 
     private List<Currency> lines;
     private List<CurrencyDetail> currencyDetails;

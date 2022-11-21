@@ -1,7 +1,6 @@
 package HwangJiHun.poeitemvalues.repository;
 
-import HwangJiHun.poeitemvalues.model.ninja.Currency;
-import HwangJiHun.poeitemvalues.model.ninja.CurrencyOverview;
+import HwangJiHun.poeitemvalues.model.ninja.Overview;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Repository
@@ -29,9 +25,9 @@ public class NinjaRepository {
     private String type = "Currency";
     private String language = "ko";
 
-    public CurrencyOverview getCurrencyOverview() throws IOException {
+    public Overview getOverview(String typeName) throws IOException {
 
-        String requestURL = getRequestURL();
+        String requestURL = getRequestURL(typeName);
         URL url = new URL(requestURL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -50,7 +46,7 @@ public class NinjaRepository {
         /* JSON -> VO, JSON이 스네이크 케이스이면 @JsonIgnoreProperties와 JsonProperty를 추가해줘야 한다. */
 //        CurrencyOverview currencyOverview = mapper.readValue(sb.toString(), new TypeReference<CurrencyOverview>() {});
 
-        return mapper.readValue(sb.toString(), new TypeReference<CurrencyOverview>() {});
+        return mapper.readValue(sb.toString(), new TypeReference<Overview>() {});
     }
 
     private StringBuilder getStringBuilder(BufferedReader br) throws IOException {
@@ -85,12 +81,12 @@ public class NinjaRepository {
         return br;
     }
 
-    private String getRequestURL() {
+    private String getRequestURL(String typeName) {
 
         return new StringBuilder()
                 .append(apiEndPoint)
                 .append("?league=" + leagueName)
-                .append("&type=" + type)
+                .append("&type=" + typeName)
                 .append("&language=" + language)
                 .toString();
     }

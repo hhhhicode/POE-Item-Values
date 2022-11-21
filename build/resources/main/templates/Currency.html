@@ -7,67 +7,81 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/js/chart-line.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
 </head>
 <body style="display: grid;">
 
-<div class="mainContainer" style="user-select: auto; min-height: 100vh; padding: .5rem">
-    <section
-            style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: .5rem">
-        <nav></nav>
-        <div style="display: grid; border-radius: .375rem">
-            <main style="overflow: auto;">
-                <section
-                        style="display: grid; grid-template-rows: auto minmax(0px, 1fr); background-clip: padding-box; overflow: hidden; border-radius: .375rem">
-                    <div style="padding: .75rem; overflow: auto; ">
-                        <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1.5rem">
-                            <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1rem">
-                                <div></div>
-                                <div>
-                                    <small style="font-style: italic; font-size: 1rem; display: block; text-align: right; padding-block: .25rem">(scroll
-                                        to see more)</small>
-                                    <div style="overflow: auto;">
-                                        <!--CurrencyTable-->
-                                        <table class="table table-hover"
-                                               style="user-select: auto; width: 100%;"
-                                               th:object="${currencyOverviewDtoList}">
+<div style="display: flex; flex-direction: column; width: 100%">
+    <!--Header-->
+    <header style="width: 100%">
+        <div style="display: flex; flex: 1 0 auto; width: 100%">
+            <!-- Top bar -->
+            <nav th:replace="~{common/common_top_bar}"></nav>
+        </div>
+    </header>
 
-                                            <!--Table Head-->
-                                            <thead style="user-select: auto;">
-                                                <tr style="user-select: auto;">
-                                                    <td class="empty"></td>
-                                                    <th colspan="5" style="text-align: center">Buy</th>
-                                                    <th colspan="4" style="text-align: center">Sell</th>
-                                                </tr>
-                                                <tr style="user-select: auto;">
-                                                    <th style="user-select: auto;text-align: center;">Name</th>
-                                                    <th style="user-select: auto;text-align: center;" colspan="3">Buying price</th>
-                                                    <th style="user-select: auto;text-align: center;" colspan="2">Last 7 days</th>
-                                                    <th style="user-select: auto;text-align: center;" colspan="3">Selling price</th>
-                                                    <th style="user-select: auto;text-align: center;">Last 7 days</th>
-                                                </tr>
-                                            </thead>
+    <!-- Content Wrapper -->
+    <div style="width: 100%; display: flex; flex-direction: row;">
+        <!--Side Bar-->
+        <ul th:replace="~{common/common_side_bar}"></ul>
 
-                                            <!--Table Body-->
-                                            <tbody style="user-select: auto;">
-                                                <tr class="table-light" style="user-select: auto;"
-                                                    th:each="currency : ${currencyOverviewDtoList}">
+        <!-- Main Content -->
+        <div class="mainContainer" style="user-select: auto; min-height: 100vh; padding: .5rem;">
+            <section
+                    style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: .5rem">
+                <div style="display: grid; border-radius: .375rem">
+                    <main style="overflow: auto;">
+                        <section
+                                style="display: grid; grid-template-rows: auto minmax(0px, 1fr); background-clip: padding-box; overflow: hidden; border-radius: .375rem">
+                            <div style="padding: .75rem; overflow: auto; ">
+                                <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1.5rem">
+                                    <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1rem">
+                                        <div></div>
+                                        <div>
+                                            <small style="font-style: italic; font-size: 1rem; display: block; text-align: right; padding-block: .25rem">(scroll
+                                                to see more)</small>
+                                            <div style="overflow: auto;">
+                                                <!--CurrencyTable-->
+                                                <table class="table table-hover"
+                                                       style="user-select: auto; width: 100%;"
+                                                       th:object="${currencyOverviewDtoList}">
 
-                                                    <!--Name-->
-                                                    <td style="user-select: auto;"  >
-                                                        <div style="display: flex; flex-direction: row;">
-                                                            <div>
-                                                                <img th:src="${currency.getIcon()}">
+                                                    <!--Table Head-->
+                                                    <thead style="user-select: auto;">
+                                                    <tr style="user-select: auto;">
+                                                        <td class="empty"></td>
+                                                        <th colspan="5" style="text-align: center">Buy</th>
+                                                        <th colspan="4" style="text-align: center">Sell</th>
+                                                    </tr>
+                                                    <tr style="user-select: auto;">
+                                                        <th style="user-select: auto;text-align: center;">Name</th>
+                                                        <th style="user-select: auto;text-align: center;" colspan="3">Buying price</th>
+                                                        <th style="user-select: auto;text-align: center;" colspan="2">Last 7 days</th>
+                                                        <th style="user-select: auto;text-align: center;" colspan="3">Selling price</th>
+                                                        <th style="user-select: auto;text-align: center;">Last 7 days</th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <!--Table Body-->
+                                                    <tbody style="user-select: auto;">
+                                                    <tr class="table-light" style="user-select: auto;"
+                                                        th:each="currency : ${currencyOverviewDtoList}">
+
+                                                        <!--Name-->
+                                                        <td style="user-select: auto;"  >
+                                                            <div style="display: flex; flex-direction: row;">
+                                                                <div>
+                                                                    <img th:src="${currency.getIcon()}">
+                                                                </div>
+                                                                <a th:href="@{/static}"
+                                                                   style="display: flex; justify-content: center; align-items: center">
+                                                                    <span th:text="${currency.getCurrencyTypeName()}">name</span>
+                                                                </a>
                                                             </div>
-                                                            <a th:href="@{/static}"
-                                                               style="display: flex; justify-content: center; align-items: center">
-                                                                <span th:text="${currency.getCurrencyTypeName()}">name</span>
-                                                            </a>
-                                                        </div>
-                                                    </td>
+                                                        </td>
 
-                                                    <!--Buying price-->
-                                                    <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                                                        <!--Buying price-->
+                                                        <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
                                                         <span th:title="|${currency.getBuyPayValue()}|"
                                                               style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
                                                               justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
@@ -77,11 +91,11 @@
                                                                  th:src="${currency.getBuyPayCurrencyIcon()}"
                                                                  th:alt="${currency.getBuyPayCurrencyName()}">
                                                         </span>
-                                                    </td>
+                                                        </td>
 
-                                                    <td style="user-select: auto;"> → </td>
+                                                        <td style="user-select: auto;"> → </td>
 
-                                                    <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                                                        <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
                                                         <span th:title="|${currency.getBuyReceiveValue()}|"
                                                               style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
                                                               justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
@@ -91,10 +105,10 @@
                                                                  th:src="${currency.getBuyGetCurrencyIcon()}"
                                                                  th:alt="${currency.getBuyGetCurrencyName()}">
                                                         </span>
-                                                    </td>
+                                                        </td>
 
-                                                    <!--Last 7 days-->
-                                                    <td style="user-select: auto; justify-content: center; align-items: center">
+                                                        <!--Last 7 days-->
+                                                        <td style="user-select: auto; justify-content: center; align-items: center">
                                                         <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
                                                             <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
                                                                 <canvas th:id="${currency.getBuyChartId()}">GRAPH</canvas>
@@ -102,19 +116,19 @@
                                                             </div>
                                                             <span th:text="${currency.getBuyTotalChange()}" style="text-align: center"></span>
                                                         </span>
-                                                    </td>
-                                                    <td style="user-select: auto;">
-                                                        <button th:text="Trade"></button>
-                                                    </td>
+                                                        </td>
+                                                        <td style="user-select: auto;">
+                                                            <button th:text="Trade"></button>
+                                                        </td>
 
-                                                    <!--Selling Price-->
-                                                    <th:block th:if="${currency.getSellPayValue() == null}">
-                                                        <td colspan="3"
-                                                            style="text-align: center; vertical-align: middle"
-                                                            th:text="|데이터 불충분|"></td>
-                                                    </th:block>
-                                                    <th:block th:unless="${currency.getSellPayValue() == null}">
-                                                        <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                                                        <!--Selling Price-->
+                                                        <th:block th:if="${currency.getSellPayValue() == null}">
+                                                            <td colspan="3"
+                                                                style="text-align: center; vertical-align: middle"
+                                                                th:text="|데이터 불충분|"></td>
+                                                        </th:block>
+                                                        <th:block th:unless="${currency.getSellPayValue() == null}">
+                                                            <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
                                                         <span th:title="|${currency.getSellPayValue()}|"
                                                               style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
                                                               justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
@@ -124,11 +138,11 @@
                                                                  th:src="${currency.getSellPayCurrencyIcon()}"
                                                                  th:alt="${currency.getSellPayCurrencyName()}">
                                                         </span>
-                                                        </td>
+                                                            </td>
 
-                                                        <td style="user-select: auto;">→</td>
+                                                            <td style="user-select: auto;">→</td>
 
-                                                        <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                                                            <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
                                                         <span th:title="|${currency.getSellReceiveValue()}|"
                                                               style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
                                                               justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
@@ -138,17 +152,17 @@
                                                                  th:src="${currency.getSellGetCurrencyIcon()}"
                                                                  th:alt="${currency.getSellGetCurrencyName()}">
                                                         </span>
-                                                        </td>
-                                                    </th:block>
+                                                            </td>
+                                                        </th:block>
 
 
-                                                    <!--Last 7 days-->
-                                                    <th:block th:if="${currency.getSellChartDataList().size() == 0}">
-                                                        <td style="text-align: center; vertical-align: middle"
-                                                            th:text="|데이터 불충분|"></td>
-                                                    </th:block>
-                                                    <th:block th:unless="${currency.getSellChartDataList().size() == 0}">
-                                                        <td style="user-select: auto; justify-content: center; align-items: center">
+                                                        <!--Last 7 days-->
+                                                        <th:block th:if="${currency.getSellChartDataList().size() == 0}">
+                                                            <td style="text-align: center; vertical-align: middle"
+                                                                th:text="|데이터 불충분|"></td>
+                                                        </th:block>
+                                                        <th:block th:unless="${currency.getSellChartDataList().size() == 0}">
+                                                            <td style="user-select: auto; justify-content: center; align-items: center">
                                                         <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
                                                             <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
                                                                 <canvas th:id="${currency.getSellChartId()}">GRAPH</canvas>
@@ -208,20 +222,23 @@
                                                             </div>
                                                             <span th:text="${currency.getSellTotalChange()}" style="text-align: center"></span>
                                                         </span>
-                                                        </td>
-                                                    </th:block>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                            </td>
+                                                        </th:block>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
+                        </section>
+                    </main>
+                </div>
+            </section>
         </div>
-    </section>
+    </div>
 </div>
+
 </body>
 </html>

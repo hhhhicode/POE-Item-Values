@@ -8,10 +8,9 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/bootstrap.bundle.js"></script>
-    <script src="/js/chart-line.js"></script>
 
 </head>
-<body th:object="${cardsDataList}">
+<body>
 
 <div style="display: flex; flex-direction: column; width: 100%">
 
@@ -35,10 +34,10 @@
             <!--Cards-->
             <div style="max-width: 100%">
                 <!--First Cards-->
-                <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                    <div th:each="cardsData : ${cardsDataList}"
+                <div th:object="${top5CardsDataList}" style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
+                    <div th:each="cardsData : ${top5CardsDataList}"
                          class="card text-white bg-primary mb-3"
-                         style="max-width: 20rem; flex: 0 0 auto">
+                         style="width: 17rem; flex: 0 0 auto">
                         <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
                         <div class="card-body">
                             <div style="display: flex; flex: 1 0 auto; height: 50%">
@@ -54,43 +53,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; flex: 0 0 auto">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">
-                            <h4 class="card-title">Primary card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; flex: 0 0 auto">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">
-                            <h4 class="card-title">Primary card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; flex: 0 0 auto">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">
-                            <h4 class="card-title">Primary card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; flex: 0 0 auto">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">
-                            <h4 class="card-title">Primary card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
                 </div>
 
                 <!--Second Cards-->
-                <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                    <div class="card bg-secondary mb-3" style="max-width: 20rem;flex: 0 0 auto;">
-                        <div class="card-header">Header</div>
+                <div th:object="${bottom5CardsDataList}" style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
+                    <div th:each="cardsData : ${bottom5CardsDataList}"
+                         class="card bg-secondary mb-3"
+                         style="width: 17rem; flex: 0 0 auto">
+                        <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
                         <div class="card-body">
-                            <h4 class="card-title">Secondary card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div style="display: flex; flex: 1 0 auto; height: 50%">
+                                <img th:title="${cardsData.buyGetCurrencyName}"
+                                     style="width: 3rem; height: auto"
+                                     th:src="${cardsData.buyGetCurrencyIcon}"
+                                     th:alt="${cardsData.buyGetCurrencyName}">
+                                <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
+                            </div>
+                            <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
+                                <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
+                                <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
+                            </div>
                         </div>
                     </div>
                 </div>
