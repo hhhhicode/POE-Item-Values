@@ -3,7 +3,9 @@ package HwangJiHun.poeitemvalues.repository;
 public enum ApiType {
 
     CURRENCY("Currency"),
-    Fragment("Fragment");
+    Fragment("Fragment"),
+    DIVINATIONCARD("DivinationCard");
+
 
     private String typeName;
     ApiType(String typeName) {

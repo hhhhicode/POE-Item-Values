@@ -11,55 +11,61 @@
 
 <script th:fragment="common_linegraph(chartId, chartDataList)" th:inline="javascript">
   new Chart(document.getElementById([[${chartId}]]), {
-    type: 'line',
-    data: {
-      labels: ["1", "2", "3", "4", "5", "6", "7"],
-      datasets: [{
-        label: "Dataset #1",
-        backgroundColor: "rgba(255,99,132,0.2)",
-        borderColor: "rgba(255,99,132,1)",
-        borderWidth: 2,
-        hoverBackgroundColor: "rgba(255,99,132,0.4)",
-        hoverBorderColor: "rgba(255,99,132,1)",
-        fill: 'start',
-        data: [[${chartDataList}]],
-      }]
-    },
-    options: {
-      plugins: {
-        filler: {
-          propagate: false,
-        },
-        legend: {
-          display: false
-        },
+      type: 'line',
+      data: {
+          labels: ["1", "2", "3", "4", "5", "6", "7"],
+          datasets: [{
+              label: "Dataset #1",
+              backgroundColor: "rgba(255,99,132,0.2)",
+              borderColor: "rgba(255,99,132,1)",
+              borderWidth: 2,
+              hoverBackgroundColor: "rgba(255,99,132,0.4)",
+              hoverBorderColor: "rgba(255,99,132,1)",
+              fill: 'start',
+              data: [[${chartDataList}]],
+          }]
       },
-      elements: {
-        point: {
-          radius: 0,
-        },
-        line: {
-          tension: 0.4,
-        },
-      },
-      interaction: {
-        intersect: false,
-      },
-      scales: {
-        x: {
-          grid: {
-            display: false,
+      options: {
+          plugins: {
+              filler: {
+                  propagate: false,
+              },
+              legend: {
+                  display: false,
+              },
+              tooltip: {
+                  enabled: false,
+              }
           },
-          display: false,
-        },
-        y: {
-          grid: {
-            display: false,
+          elements: {
+              point: {
+                  radius: 0,
+              },
+              line: {
+                  tension: 0.4,
+              },
           },
-          display: false,
-        }
-      }
-    },
+          interaction: {
+              intersect: false,
+          },
+          scales: {
+              x: {
+                  grid: {
+                      display: false,
+                  },
+                  display: false,
+              },
+              y: {
+                  grid: {
+                      display: false,
+                  },
+                  display: false,
+              }
+          },
+          hover: {
+              mode: null,
+          },
+      },
   });
 </script>
 

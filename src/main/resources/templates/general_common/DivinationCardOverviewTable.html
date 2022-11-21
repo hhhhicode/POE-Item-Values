@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Divination Card Overview Table</title>
+
+
+</head>
+<body>
+<div th:fragment="general_divinationcard_overview_table(overviewDtoList)"
+     class="mainContainer"
+     style="user-select: auto; min-height: 100vh; padding: .5rem;">
+    <section
+            style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: .5rem">
+        <div style="display: grid; border-radius: .375rem">
+            <main style="overflow: auto;">
+                <section
+                        style="display: grid; grid-template-rows: auto minmax(0px, 1fr); background-clip: padding-box; overflow: hidden; border-radius: .375rem">
+                    <div style="padding: .75rem; overflow: auto; ">
+                        <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1.5rem">
+                            <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1rem">
+                                <div></div>
+                                <div>
+                                    <small style="font-style: italic; font-size: 1rem; display: block; text-align: right; padding-block: .25rem">(scroll
+                                        to see more)</small>
+                                    <div style="overflow: auto;">
+                                        <!--DivinationCard Table-->
+                                        <table class="table table-hover"
+                                               style="user-select: auto; width: 100%;"
+                                               th:object="${overviewDtoList}">
+
+                                            <!--Table Head-->
+                                            <thead style="user-select: auto;">
+                                            <tr style="user-select: auto;">
+                                                <th style="user-select: auto;text-align: center;">Name</th>
+                                                <th></th>
+                                                <th style="user-select: auto;text-align: center;">Stack size</th>
+                                                <th style="user-select: auto;text-align: center;">Value</th>
+                                                <th style="user-select: auto;text-align: center;">Last 7 days</th>
+                                                <th style="user-select: auto;text-align: center;">#Listed</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+
+                                            <!--Table Body-->
+                                            <tbody style="user-select: auto;">
+                                            <tr class="table-light" style="user-select: auto;"
+                                                th:each="overviewDto : ${overviewDtoList}">
+
+                                                <!--Name-->
+                                                <td style="user-select: auto;"  >
+                                                    <div style="display: flex; flex-direction: row;">
+                                                        <div>
+                                                            <img th:src="${overviewDto.getIcon()}">
+                                                        </div>
+                                                        <a th:href="@{/static}"
+                                                           style="display: flex; justify-content: center; align-items: center">
+                                                            <span th:text="${overviewDto.getName()}">name</span>
+                                                        </a>
+                                                    </div>
+                                                </td>
+
+                                                <!--WIKI-->
+                                                <td style="user-select: auto;">
+                                                    <button th:href="@{/static}" th:text="WIKI"></button>
+                                                </td>
+
+                                                <!--Stack size-->
+                                                <td style="user-select: auto;">
+                                                    <span th:text="${overviewDto.getStackSize()}"></span>
+                                                </td>
+
+                                                <!--Buying price-->
+                                                <th:block th:if="${overviewDto.getChartData().size() == 0}">
+                                                    <td style="text-align: center; vertical-align: middle"
+                                                        th:text="|데이터 불충분|"></td>
+                                                </th:block>
+                                                <th:block th:unless="${overviewDto.getChartData().size() == 0}">
+                                                    <td style="user-select: auto; font-weight: 500; justify-content: center; align-items: center">
+                                                    <span th:title="|${overviewDto.getValue()}|"
+                                                          style="display: grid; grid: 1fr / 1fr 1.5rem; grid-gap: 0.25rem;
+                                                          justify-content: center; align-items: center; box-sizing: border-box; max-width: 80ch">
+                                                        <span th:text="|${overviewDto.getValue()}|" style="text-align: center">buying price 1</span>
+                                                        <img th:title="${overviewDto.getName()}"
+                                                             width="100%" height="auto"
+                                                             th:src="${overviewDto.getIcon()}"
+                                                             th:alt="${overviewDto.getName()}">
+                                                    </span>
+                                                    </td>
+                                                </th:block>
+
+                                                <!--Last 7 days-->
+                                                <td style="user-select: auto; justify-content: center; align-items: center">
+                                                    <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
+                                                        <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
+                                                            <canvas th:id="${overviewDto.getName()}">GRAPH</canvas>
+                                                            <script th:replace="~{common/common_linegrpah :: common_linegraph(${overviewDto.getName()}, ${overviewDto.getChartData()})}"></script>
+                                                        </div>
+                                                        <span th:text="${overviewDto.getTotalChange()}" style="text-align: center"></span>
+                                                    </span>
+                                                </td>
+
+                                                <!--#Listed-->
+                                                <td>
+                                                    <span th:text="${overviewDto.getListingCount}"></span>
+                                                </td>
+
+                                                <!--Trade-->
+                                                <td style="user-select: auto;">
+                                                    <button th:text="Trade"></button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </section>
+</div>
+</body>
+</html>

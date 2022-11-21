@@ -2,11 +2,13 @@ package HwangJiHun.poeitemvalues.service;
 
 import HwangJiHun.poeitemvalues.model.ninja.*;
 import HwangJiHun.poeitemvalues.model.ninja.Currency;
+import HwangJiHun.poeitemvalues.model.ninja.dto.DivinationCardOverviewDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.CardsDataListDto;
-import HwangJiHun.poeitemvalues.model.ninja.dto.OverviewDto;
+import HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.TotalChange5Currency;
 import HwangJiHun.poeitemvalues.repository.ApiType;
 import HwangJiHun.poeitemvalues.repository.NinjaRepository;
+import HwangJiHun.poeitemvalues.repository.ApiEndPointType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,30 @@ public class NinjaService {
 
     private final NinjaRepository ninjaRepository;
 
-    public List<OverviewDto> getCurrencyOverview() throws IOException {
+    public List<CurrencyOverviewDto> getCurrencyOverview() throws IOException {
 
-        Overview currencyOverview = ninjaRepository.getOverview(ApiType.CURRENCY.getTypeName());
+        CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview(ApiEndPointType.CURRENCYOVERVIEW.getApiEndPoint(), ApiType.CURRENCY.getTypeName());
+        List<CurrencyOverviewDto> currencyOverviewDtoList = getCurrencyOverviewDtoList(currencyOverview);
+
+        return currencyOverviewDtoList;
+    }
+
+    public List<CurrencyOverviewDto> getFragmentOverview() throws IOException {
+        CurrencyOverview fragmentCurrencyOverview = ninjaRepository.getCurrencyOverview(ApiEndPointType.CURRENCYOVERVIEW.getApiEndPoint(), ApiType.Fragment.getTypeName());
+        List<CurrencyOverviewDto> fragmentOverviewDtoList = getCurrencyOverviewDtoList(fragmentCurrencyOverview);
+
+        return fragmentOverviewDtoList;
+    }
+
+    public List<DivinationCardOverviewDto> getDivinationCardOverview() throws IOException {
+        DivinationCardOverview divinationCardOverview = ninjaRepository.getDivinationCardOverview(ApiEndPointType.ITEMOVERVIEW.getApiEndPoint(), ApiType.DIVINATIONCARD.getTypeName());
+        List<DivinationCardOverviewDto> divinationCardOverviewDtoList = getDivinationCardOverviewDtoList(divinationCardOverview);
+        return divinationCardOverviewDtoList;
+    }
+
+    private List<CurrencyOverviewDto> getCurrencyOverviewDtoList(CurrencyOverview currencyOverview) {
+        List<CurrencyOverviewDto> currencyOverviewDtoList = new ArrayList<>();
         Map<Integer, CurrencyDetail> idCurrencyDetailMap = getIdCurrencyDetailMap(currencyOverview.getCurrencyDetails());
-        List<OverviewDto> currencyOverviewDtoList = new ArrayList<>();
-        Map<String, List<Double>> chartDataMap = new HashMap<>();
 
         List<Currency> lines = currencyOverview.getLines();
         for (Currency line : lines) {
@@ -50,46 +70,38 @@ public class NinjaService {
                                             pay != null ? 1 / pay.getValue() : null
                                     )
                     );
-            chartDataMap.put(line.getCurrencyTypeName(), line.getReceiveSparkLine().getData());
         }
         return currencyOverviewDtoList;
     }
-    public List<OverviewDto> getFragmentOverview() throws IOException {
 
-        Overview fragmentOverview = ninjaRepository.getOverview(ApiType.Fragment.getTypeName());
-        Map<Integer, CurrencyDetail> idCurrencyDetailMap = getIdCurrencyDetailMap(fragmentOverview.getCurrencyDetails());
-        List<OverviewDto> fragmentOverviewDtoList = new ArrayList<>();
-        Map<String, List<Double>> chartDataMap = new HashMap<>();
+    private List<DivinationCardOverviewDto> getDivinationCardOverviewDtoList(DivinationCardOverview divinationCardOverview) {
+        List<DivinationCardOverviewDto> divinationCardOverviewDtoList = new ArrayList<>();
 
-        List<Currency> lines = fragmentOverview.getLines();
-        for (Currency line : lines) {
-            MarketPrice receive = line.getReceive();
-            MarketPrice pay = line.getPay();
+        List<DivinationCard> lines = divinationCardOverview.getLines();
+        for (DivinationCard line : lines) {
 
-            /*Currency Overview List*/
-            fragmentOverviewDtoList.add
+            /*Divination Card Overview List*/
+            divinationCardOverviewDtoList.add
                     (
-                            getCurrencyOverviewDto
+                            new DivinationCardOverviewDto
                                     (
-                                            getCurrencyNameIconMap(fragmentOverview.getCurrencyDetails()),
-                                            line,
-                                            idCurrencyDetailMap.get(receive.getPayCurrencyId()),
-                                            idCurrencyDetailMap.get(receive.getGetCurrencyId()),
-                                            pay != null ? getCurrencyDetail(pay, idCurrencyDetailMap, pay.getPayCurrencyId()) : null,
-                                            pay != null ? getCurrencyDetail(pay, idCurrencyDetailMap, pay.getGetCurrencyId()) : null,
-                                            (int) Math.round(line.getReceiveSparkLine().getTotalChange()),
-                                            (int) Math.round(line.getPaySparkLine().getTotalChange()),
-                                            receive.getValue(),
-                                            pay != null ? 1 / pay.getValue() : null
+                                            line.getName(),
+                                            line.getIcon(),
+                                            line.getStackSize(),
+                                            line.getDivineValue() > 2 ? (double) Math.round(line.getDivineValue()*10)/10 : (double) Math.round(line.getChaosValue()*10)/10,
+                                            line.getSparkline().getData(),
+                                            (int) Math.round(line.getSparkline().getTotalChange()) > 0 ? "+" + (int) Math.round(line.getSparkline().getTotalChange()) + "%"
+                                            : (int) Math.round(line.getSparkline().getTotalChange()) + "%",
+                                            line.getListingCount()
                                     )
                     );
-            chartDataMap.put(line.getCurrencyTypeName(), line.getReceiveSparkLine().getData());
         }
-        return fragmentOverviewDtoList;
+        return divinationCardOverviewDtoList;
     }
 
+
     public CardsDataListDto getTop5CardsData() throws IOException {
-        Overview currencyOverview = ninjaRepository.getOverview(ApiType.CURRENCY.getTypeName());
+        CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview(ApiEndPointType.CURRENCYOVERVIEW.getApiEndPoint(), ApiType.CURRENCY.getTypeName());
         List<CurrencyDetail> currencyDetails = currencyOverview.getCurrencyDetails();
 
 
@@ -103,8 +115,8 @@ public class NinjaService {
         List<TotalChange5Currency> totalChangeTop5CurrencyList = getTotalChange5Currencies(lines, currencyNameIconMap, idCurrencyDetailMap);
 
         CardsDataListDto cardsDataListDto = new CardsDataListDto();
-        cardsDataListDto.setTop5Cards(totalChangeTop5CurrencyList);
-        cardsDataListDto.setBottom5Cards(totalChangeBottom5CurrencyList);
+        cardsDataListDto.setCurrencyTop5Cards(totalChangeTop5CurrencyList);
+        cardsDataListDto.setCurrencyBottom5Cards(totalChangeBottom5CurrencyList);
 
         return cardsDataListDto;
     }
@@ -161,7 +173,7 @@ public class NinjaService {
         return idCurrencyDetailMap.get(pay1);
     }
 
-    private OverviewDto getCurrencyOverviewDto(
+    private CurrencyOverviewDto getCurrencyOverviewDto(
             Map<String, String> currencyNameIconMap,
             Currency line,
             CurrencyDetail buyPayCurrencyDetail,
@@ -173,7 +185,7 @@ public class NinjaService {
             Double buyValue,
             Double sellValue) {
 
-        OverviewDto currencyOverviewDto = new OverviewDto
+        CurrencyOverviewDto currencyOverviewDto = new CurrencyOverviewDto
                 (
                         /*Name*/
                         line.getCurrencyTypeName(),

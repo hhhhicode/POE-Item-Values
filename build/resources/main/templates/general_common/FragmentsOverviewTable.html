@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Fragments Overview Table</title>
+
+
 </head>
 <body>
 <div th:fragment="general_fragment_overview_table(overviewDtoList)"
@@ -45,7 +47,7 @@
 
                       <!--Table Body-->
                       <tbody style="user-select: auto;">
-                      <!--/*@thymesVar id="overviewDto" type="HwangJiHun.poeitemvalues.model.ninja.dto.OverviewDto"*/-->
+                      <!--/*@thymesVar id="overviewDto" type="HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto"*/-->
                       <tr class="table-light" style="user-select: auto;"
                           th:each="overviewDto : ${overviewDtoList}">
 
@@ -148,7 +150,7 @@
                               <span style="display: flex; flex-direction: row; align-items: center; justify-content: left;">
                                   <div style="background-color: transparent; width: 6rem; height: 2rem; align-items: center; justify-content: center">
                                       <canvas th:id="${overviewDto.getSellChartId()}">GRAPH</canvas>
-                                      <script th:replace="~{common/common_linegrpah :: common_linegraph(${overviewDto.getBuyChartId()}, ${overviewDto.getBuyChartDataList()})}"></script>
+                                      <script th:replace="~{common/common_linegrpah :: common_linegraph(${overviewDto.getSellChartId()}, ${overviewDto.getSellChartDataList()})}"></script>
                                   </div>
                                   <span th:text="${overviewDto.getSellTotalChange()}" style="text-align: center"></span>
                               </span>

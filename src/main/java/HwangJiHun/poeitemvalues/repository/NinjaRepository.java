@@ -1,6 +1,7 @@
 package HwangJiHun.poeitemvalues.repository;
 
-import HwangJiHun.poeitemvalues.model.ninja.Overview;
+import HwangJiHun.poeitemvalues.model.ninja.CurrencyOverview;
+import HwangJiHun.poeitemvalues.model.ninja.DivinationCardOverview;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +20,14 @@ import java.nio.charset.StandardCharsets;
 @Repository
 public class NinjaRepository {
 
-    private String apiEndPoint = "https://poe.ninja/api/data/currencyoverview";
     @Value("${game.league.name}")
     private String leagueName;
     private String type = "Currency";
     private String language = "ko";
 
-    public Overview getOverview(String typeName) throws IOException {
+    public CurrencyOverview getCurrencyOverview(String apiEndPoint, String typeName) throws IOException {
 
-        String requestURL = getRequestURL(typeName);
+        String requestURL = getRequestURL(apiEndPoint, typeName);
         URL url = new URL(requestURL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -46,8 +46,27 @@ public class NinjaRepository {
         /* JSON -> VO, JSON이 스네이크 케이스이면 @JsonIgnoreProperties와 JsonProperty를 추가해줘야 한다. */
 //        CurrencyOverview currencyOverview = mapper.readValue(sb.toString(), new TypeReference<CurrencyOverview>() {});
 
-        return mapper.readValue(sb.toString(), new TypeReference<Overview>() {});
+        return mapper.readValue(sb.toString(), new TypeReference<CurrencyOverview>() {});
     }
+    public DivinationCardOverview getDivinationCardOverview(String apiEndPoint, String typeName) throws IOException {
+
+        String requestURL = getRequestURL(apiEndPoint, typeName);
+        URL url = new URL(requestURL);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/json");
+        conn.setDoOutput(true);
+        BufferedReader br = getBufferedReader(conn);
+        StringBuilder sb = getStringBuilder(br);
+
+        br.close();
+        conn.disconnect();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        return mapper.readValue(sb.toString(), new TypeReference<DivinationCardOverview>() {});
+    }
+
 
     private StringBuilder getStringBuilder(BufferedReader br) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -81,13 +100,12 @@ public class NinjaRepository {
         return br;
     }
 
-    private String getRequestURL(String typeName) {
+    private String getRequestURL(String apiEndPoint, String typeName) {
 
         return new StringBuilder()
                 .append(apiEndPoint)
                 .append("?league=" + leagueName)
                 .append("&type=" + typeName)
-                .append("&language=" + language)
                 .toString();
     }
 }

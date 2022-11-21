@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 public class SparkLine {
 
-    private List<Double> data = new ArrayList<>(7);
+    private List<Double> data;
     private Double totalChange;
 }

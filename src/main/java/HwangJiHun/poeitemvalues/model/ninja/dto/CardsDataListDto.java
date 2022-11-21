@@ -8,6 +8,6 @@ import java.util.List;
 @Getter @Setter
 public class CardsDataListDto {
 
-    private List<TotalChange5Currency> top5Cards;
-    private List<TotalChange5Currency> bottom5Cards;
+    private List<TotalChange5Currency> currencyTop5Cards;
+    private List<TotalChange5Currency> currencyBottom5Cards;
 }
