@@ -7,17 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.util.List;
 
 @Controller
+@RequestMapping("/general")
 public class GeneralController {
 
     @Autowired
     NinjaService ninjaService;
 
-    @GetMapping("/general/currency")
+    @GetMapping("/currency")
     public String currency(Model model) throws IOException {
         List<CurrencyOverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverview();
 
@@ -26,7 +28,7 @@ public class GeneralController {
         return "/general/currency";
     }
 
-    @GetMapping("/general/fragment")
+    @GetMapping("/fragment")
     public String fragment(Model model) throws IOException {
         List<CurrencyOverviewDto> fragmentOverviewDtoList = ninjaService.getFragmentOverview();
 
@@ -35,7 +37,7 @@ public class GeneralController {
         return "/general/fragment";
     }
 
-    @GetMapping("/general/divinationcard")
+    @GetMapping("/divinationcard")
     public String divinationcard(Model model) throws IOException {
         List<DivinationCardOverviewDto> divinationcardOverviewDtoList = ninjaService.getDivinationCardOverview();
 
