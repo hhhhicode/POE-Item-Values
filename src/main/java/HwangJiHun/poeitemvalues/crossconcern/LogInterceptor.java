@@ -1,6 +1,8 @@
 package HwangJiHun.poeitemvalues.crossconcern;
 
+import HwangJiHun.poeitemvalues.service.ExceptionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Slf4j
 public class LogInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    private ExceptionService exceptionService;
     public static final String LOG_ID = "logId";
 
     @Override
@@ -40,9 +44,11 @@ public class LogInterceptor implements HandlerInterceptor {
 
         log.info("RESPONSE [{}][{}][{}]", uuid, requestURI, handler);
 
-        //TODO 'Error Center' 에 Exception 전달해야함.
         if (ex != null) {
             log.error("---------Handler Exception---------", ex);
+            String returnValue = exceptionService.sendExceptionToErrorCenter(ex);
+
+            log.info("GET Exception = {}", returnValue);
         }
     }
 }
