@@ -1,6 +1,6 @@
 package HwangJiHun.poeitemvalues.repository;
 
-public enum ApiType {
+public enum ItemType {
 
     CURRENCY("Currency"),
     Fragment("Fragment"),
@@ -8,7 +8,7 @@ public enum ApiType {
 
 
     private String typeName;
-    ApiType(String typeName) {
+    ItemType(String typeName) {
         this.typeName = typeName;
     }
 

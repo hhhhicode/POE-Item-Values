@@ -20,7 +20,6 @@ public class ExceptionService {
     public String sendExceptionToErrorCenter(Exception e) {
         MyExceptionUtils myExceptionUtils = new MyExceptionUtils();
         MyException myException = myExceptionUtils.getMyException(e);
-//        log.info("MyException = {}", myException);
         String returnValue = exceptionThrowClient.postThrowException(myException);
 
         return returnValue;

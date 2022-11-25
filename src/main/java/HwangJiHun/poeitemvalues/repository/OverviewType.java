@@ -1,12 +1,12 @@
 package HwangJiHun.poeitemvalues.repository;
 
-public enum ApiEndPointType {
+public enum OverviewType {
     CURRENCYOVERVIEW("currencyoverview"),
     ITEMOVERVIEW("itemoverview");
 
     private String overviewTypeName;
 
-    ApiEndPointType(String overviewTypeName) {
+    OverviewType(String overviewTypeName) {
         this.overviewTypeName = overviewTypeName;
     }
 

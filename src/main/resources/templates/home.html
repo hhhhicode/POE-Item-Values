@@ -40,10 +40,10 @@
                         <span th:text="|Currency Max & Min|"
                               style="font-style: italic; font-weight: bold; font-size: large;"></span>
                     </div>
-                    <div th:object="${cardsDataListDto}">
+                    <div th:object="${currencyCardsDataListDto}">
                         <!--Max Cards-->
                         <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyTop5Cards}"
+                            <div th:each="cardsData : ${currencyCardsDataListDto.getCurrencyTop5Cards}"
                                  class="card text-white bg-dark mb-3"
                                  style="width: 17rem; flex: 0 0 auto">
                                 <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
@@ -64,7 +64,7 @@
                         </div>
                         <!--Min Cards-->
                         <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyBottom5Cards}"
+                            <div th:each="cardsData : ${currencyCardsDataListDto.getCurrencyBottom5Cards}"
                                  class="card bg-secondary mb-3"
                                  style="width: 17rem; flex: 0 0 auto">
                                 <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
@@ -89,13 +89,13 @@
                 <!--Fragment Max Min-->
                 <div style="max-width: fit-content; border-color: #0d0d0d; border-style: solid; border-width: .5rem">
                     <div>
-                        <span th:text="|Currency Max & Min|"
+                        <span th:text="|Fragment Max & Min|"
                               style="font-style: italic; font-weight: bold; font-size: large;"></span>
                     </div>
-                    <div th:object="${cardsDataListDto}">
+                    <div th:object="${fragmentCardsDataListDto}">
                         <!--Max Cards-->
                         <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyTop5Cards}"
+                            <div th:each="cardsData : ${fragmentCardsDataListDto.getCurrencyTop5Cards}"
                                  class="card text-white bg-dark mb-3"
                                  style="width: 17rem; flex: 0 0 auto">
                                 <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
@@ -116,59 +116,7 @@
                         </div>
                         <!--Min Cards-->
                         <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyBottom5Cards}"
-                                 class="card bg-secondary mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Fragment Max Min-->
-                <div style="max-width: fit-content; border-color: #0d0d0d; border-style: solid; border-width: .5rem">
-                    <div>
-                        <span th:text="|Currency Max & Min|"
-                              style="font-style: italic; font-weight: bold; font-size: large;"></span>
-                    </div>
-                    <div th:object="${cardsDataListDto}">
-                        <!--Max Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyTop5Cards}"
-                                 class="card text-white bg-dark mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Min Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyBottom5Cards}"
+                            <div th:each="cardsData : ${fragmentCardsDataListDto.getCurrencyBottom5Cards}"
                                  class="card bg-secondary mb-3"
                                  style="width: 17rem; flex: 0 0 auto">
                                 <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
@@ -196,10 +144,10 @@
                         <span th:text="|Currency Max & Min|"
                               style="font-style: italic; font-weight: bold; font-size: large;"></span>
                     </div>
-                    <div th:object="${cardsDataListDto}">
+                    <div th:object="${fragmentCardsDataListDto}">
                         <!--Max Cards-->
                         <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyTop5Cards}"
+                            <div th:each="cardsData : ${fragmentCardsDataListDto.getCurrencyTop5Cards}"
                                  class="card text-white bg-dark mb-3"
                                  style="width: 17rem; flex: 0 0 auto">
                                 <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
@@ -220,163 +168,7 @@
                         </div>
                         <!--Min Cards-->
                         <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyBottom5Cards}"
-                                 class="card bg-secondary mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Currency Max Min-->
-                <div style="max-width: fit-content; border-color: #0d0d0d; border-style: solid; border-width: .5rem">
-                    <div>
-                        <span th:text="|Currency Max & Min|"
-                              style="font-style: italic; font-weight: bold; font-size: large;"></span>
-                    </div>
-                    <div th:object="${cardsDataListDto}">
-                        <!--Max Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyTop5Cards}"
-                                 class="card text-white bg-dark mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Min Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyBottom5Cards}"
-                                 class="card bg-secondary mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Currency Max Min-->
-                <div style="max-width: fit-content; border-color: #0d0d0d; border-style: solid; border-width: .5rem">
-                    <div>
-                        <span th:text="|Currency Max & Min|"
-                              style="font-style: italic; font-weight: bold; font-size: large;"></span>
-                    </div>
-                    <div th:object="${cardsDataListDto}">
-                        <!--Max Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyTop5Cards}"
-                                 class="card text-white bg-dark mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Min Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyBottom5Cards}"
-                                 class="card bg-secondary mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Currency Max Min-->
-                <div style="max-width: fit-content; border-color: #0d0d0d; border-style: solid; border-width: .5rem">
-                    <div>
-                        <span th:text="|Currency Max & Min|"
-                              style="font-style: italic; font-weight: bold; font-size: large;"></span>
-                    </div>
-                    <div th:object="${cardsDataListDto}">
-                        <!--Max Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyTop5Cards}"
-                                 class="card text-white bg-dark mb-3"
-                                 style="width: 17rem; flex: 0 0 auto">
-                                <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>
-                                <div class="card-body">
-                                    <div style="display: flex; flex: 1 0 auto; height: 50%">
-                                        <img th:title="${cardsData.buyGetCurrencyName}"
-                                             style="width: 3rem; height: auto"
-                                             th:src="${cardsData.buyGetCurrencyIcon}"
-                                             th:alt="${cardsData.buyGetCurrencyName}">
-                                        <span th:text="${cardsData.buyTotalChange}" style="text-align: center"></span>
-                                    </div>
-                                    <div style="background-color: transparent; width: 100%; height: 50%; align-items: center; justify-content: center">
-                                        <canvas th:id="${cardsData.buyChartId}" style="width: 100%; height: 100%">GRAPH</canvas>
-                                        <script th:replace="~{common/common_linegrpah :: common_linegraph(${cardsData.buyChartId}, ${cardsData.buyChartDataList})}"></script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Min Cards-->
-                        <div style="padding: 0.35rem; display: flex; flex-wrap: nowrap; overflow-x: auto; max-width: 50rem">
-                            <div th:each="cardsData : ${cardsDataListDto.getCurrencyBottom5Cards}"
+                            <div th:each="cardsData : ${fragmentCardsDataListDto.getCurrencyBottom5Cards}"
                                  class="card bg-secondary mb-3"
                                  style="width: 17rem; flex: 0 0 auto">
                                 <div class="card-header" th:text="${cardsData.currencyTypeName}">Header</div>

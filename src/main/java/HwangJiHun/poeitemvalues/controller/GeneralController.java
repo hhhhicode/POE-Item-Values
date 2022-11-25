@@ -21,7 +21,7 @@ public class GeneralController {
 
     @GetMapping("/currency")
     public String currency(Model model) throws IOException {
-        List<CurrencyOverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverview();
+        List<CurrencyOverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverviewDtoList();
 
         model.addAttribute("currencyOverviewDtoList", currencyOverviewDtoList);
 
@@ -30,7 +30,7 @@ public class GeneralController {
 
     @GetMapping("/fragment")
     public String fragment(Model model) throws IOException {
-        List<CurrencyOverviewDto> fragmentOverviewDtoList = ninjaService.getFragmentOverview();
+        List<CurrencyOverviewDto> fragmentOverviewDtoList = ninjaService.getFragmentOverviewDtoList();
 
         model.addAttribute("fragmentOverviewDtoList", fragmentOverviewDtoList);
 
@@ -39,7 +39,7 @@ public class GeneralController {
 
     @GetMapping("/divinationcard")
     public String divinationcard(Model model) throws IOException {
-        List<DivinationCardOverviewDto> divinationcardOverviewDtoList = ninjaService.getDivinationCardOverview();
+        List<DivinationCardOverviewDto> divinationcardOverviewDtoList = ninjaService.getDivinationCardOverviewDtoList();
 
         model.addAttribute("divinationcardOverviewDtoList", divinationcardOverviewDtoList);
 

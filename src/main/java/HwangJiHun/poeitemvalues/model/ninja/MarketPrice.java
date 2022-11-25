@@ -3,9 +3,9 @@ package HwangJiHun.poeitemvalues.model.ninja;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
-//TODO 사용처 주석 달기
 
 /**
  * id : ?
@@ -26,7 +26,7 @@ public class MarketPrice {
     @JsonProperty(value = "get_currency_id")
     private Integer getCurrencyId;
     @JsonProperty(value = "sample_time_utc")
-    private Date sampleTimeUtc;
+    private Timestamp sampleTimeUtc;
     private Integer count;
     private Double value;
     @JsonProperty(value = "data_point_count")

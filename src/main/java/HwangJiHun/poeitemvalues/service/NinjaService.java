@@ -6,10 +6,9 @@ import HwangJiHun.poeitemvalues.model.ninja.dto.DivinationCardOverviewDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.CardsDataListDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.TotalChange5Currency;
-import HwangJiHun.poeitemvalues.repository.ApiType;
+import HwangJiHun.poeitemvalues.repository.ItemType;
 import HwangJiHun.poeitemvalues.repository.NinjaRepository;
-import HwangJiHun.poeitemvalues.repository.ApiEndPointType;
-import lombok.RequiredArgsConstructor;
+import HwangJiHun.poeitemvalues.repository.OverviewType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,30 +17,56 @@ import java.util.*;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class NinjaService {
 
     private final NinjaRepository ninjaRepository;
 
-    public List<CurrencyOverviewDto> getCurrencyOverview() throws IOException {
+    public NinjaService(NinjaRepository ninjaRepository) {
+        this.ninjaRepository = ninjaRepository;
+    }
 
-        CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview(ApiEndPointType.CURRENCYOVERVIEW.getApiEndPoint(), ApiType.CURRENCY.getTypeName());
+    public CurrencyOverview getOverview(String overviewType, String itemType) throws IOException {
+        return ninjaRepository.getCurrencyOverview(overviewType, itemType);
+    }
+
+    public List<CurrencyOverviewDto> getCurrencyOverviewDtoList() throws IOException {
+
+        CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.CURRENCY.getTypeName());
         List<CurrencyOverviewDto> currencyOverviewDtoList = getCurrencyOverviewDtoList(currencyOverview);
 
         return currencyOverviewDtoList;
     }
 
-    public List<CurrencyOverviewDto> getFragmentOverview() throws IOException {
-        CurrencyOverview fragmentCurrencyOverview = ninjaRepository.getCurrencyOverview(ApiEndPointType.CURRENCYOVERVIEW.getApiEndPoint(), ApiType.Fragment.getTypeName());
+    public List<CurrencyOverviewDto> getFragmentOverviewDtoList() throws IOException {
+        CurrencyOverview fragmentCurrencyOverview = ninjaRepository.getCurrencyOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.Fragment.getTypeName());
         List<CurrencyOverviewDto> fragmentOverviewDtoList = getCurrencyOverviewDtoList(fragmentCurrencyOverview);
 
         return fragmentOverviewDtoList;
     }
 
-    public List<DivinationCardOverviewDto> getDivinationCardOverview() throws IOException {
-        DivinationCardOverview divinationCardOverview = ninjaRepository.getDivinationCardOverview(ApiEndPointType.ITEMOVERVIEW.getApiEndPoint(), ApiType.DIVINATIONCARD.getTypeName());
+    public List<DivinationCardOverviewDto> getDivinationCardOverviewDtoList() throws IOException {
+        DivinationCardOverview divinationCardOverview = ninjaRepository.getDivinationCardOverview(OverviewType.ITEMOVERVIEW.getApiEndPoint(), ItemType.DIVINATIONCARD.getTypeName());
         List<DivinationCardOverviewDto> divinationCardOverviewDtoList = getDivinationCardOverviewDtoList(divinationCardOverview);
         return divinationCardOverviewDtoList;
+    }
+
+    public CardsDataListDto getTop5CardsData(String apiEndPoint, String typeName) throws IOException {
+        CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview(apiEndPoint, typeName);
+        List<CurrencyDetail> currencyDetails = currencyOverview.getCurrencyDetails();
+        Map<String, String> currencyNameIconMap = getCurrencyNameIconMap(currencyDetails);
+        Map<Integer, CurrencyDetail> idCurrencyDetailMap = getIdCurrencyDetailMap(currencyDetails);
+
+        List<Currency> lines = currencyOverview.getLines();
+        lines.sort(Comparator.comparing(currency -> currency.getReceiveSparkLine().getTotalChange()));
+        List<TotalChange5Currency> totalChangeBottom5CurrencyList = getTotalChange5Currencies(lines, currencyNameIconMap, idCurrencyDetailMap);
+        lines.sort(Comparator.comparing((currency -> ((Currency) currency).getReceiveSparkLine().getTotalChange())).reversed());
+        List<TotalChange5Currency> totalChangeTop5CurrencyList = getTotalChange5Currencies(lines, currencyNameIconMap, idCurrencyDetailMap);
+
+        CardsDataListDto cardsDataListDto = new CardsDataListDto();
+        cardsDataListDto.setCurrencyTop5Cards(totalChangeTop5CurrencyList);
+        cardsDataListDto.setCurrencyBottom5Cards(totalChangeBottom5CurrencyList);
+
+        return cardsDataListDto;
     }
 
     private List<CurrencyOverviewDto> getCurrencyOverviewDtoList(CurrencyOverview currencyOverview) {
@@ -100,26 +125,6 @@ public class NinjaService {
     }
 
 
-    public CardsDataListDto getTop5CardsData() throws IOException {
-        CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview(ApiEndPointType.CURRENCYOVERVIEW.getApiEndPoint(), ApiType.CURRENCY.getTypeName());
-        List<CurrencyDetail> currencyDetails = currencyOverview.getCurrencyDetails();
-
-
-        Map<String, String> currencyNameIconMap = getCurrencyNameIconMap(currencyDetails);
-        Map<Integer, CurrencyDetail> idCurrencyDetailMap = getIdCurrencyDetailMap(currencyDetails);
-
-        List<Currency> lines = currencyOverview.getLines();
-        lines.sort(Comparator.comparing(currency -> currency.getReceiveSparkLine().getTotalChange()));
-        List<TotalChange5Currency> totalChangeBottom5CurrencyList = getTotalChange5Currencies(lines, currencyNameIconMap, idCurrencyDetailMap);
-        lines.sort(Comparator.comparing((currency -> ((Currency) currency).getReceiveSparkLine().getTotalChange())).reversed());
-        List<TotalChange5Currency> totalChangeTop5CurrencyList = getTotalChange5Currencies(lines, currencyNameIconMap, idCurrencyDetailMap);
-
-        CardsDataListDto cardsDataListDto = new CardsDataListDto();
-        cardsDataListDto.setCurrencyTop5Cards(totalChangeTop5CurrencyList);
-        cardsDataListDto.setCurrencyBottom5Cards(totalChangeBottom5CurrencyList);
-
-        return cardsDataListDto;
-    }
 
     private static List<TotalChange5Currency> getTotalChange5Currencies(List<Currency> lines, Map<String, String> currencyNameIconMap, Map<Integer, CurrencyDetail> idCurrencyDetailMap) {
         List<TotalChange5Currency> totalChangeTop5CurrencyList = new ArrayList<>();
