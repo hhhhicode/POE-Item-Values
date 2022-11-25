@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class H2DataBaseRepository {
@@ -36,6 +37,25 @@ public class H2DataBaseRepository {
         SqlParameterSource param = new BeanPropertySqlParameterSource(updateParamDto);
 
         jdbcInsert.execute(param);
+    }
+
+    public List<UpdateParamDto> findAll() {
+        String sql = "select * from POEITEMVALUES";
+
+        return jdbcTemplate.query(sql,
+                (rs, rn) -> {
+                    UpdateParamDto updateParamDto = new UpdateParamDto();
+                    updateParamDto.setType(rs.getString("type"));
+                    updateParamDto.setTime(rs.getTimestamp("time"));
+                    updateParamDto.setItemName(rs.getString("item_name"));
+                    updateParamDto.setReceiveValue(rs.getDouble("receive_value"));
+                    updateParamDto.setChaosEquivalent(rs.getFloat("chaos_equivalent"));
+                    updateParamDto.setDetailsId(rs.getString("details_id"));
+                    updateParamDto.setGetCurrencyId(rs.getInt("get_currency_id"));
+                    updateParamDto.setPayCurrencyId(rs.getInt("pay_currency_id"));
+                    updateParamDto.setLeagueId(rs.getInt("league_id"));
+                    return updateParamDto;
+                });
     }
 
     public UpdateParamDto transferCurrencyToUpdateParamDto(Currency currency) {

@@ -6,6 +6,8 @@ import HwangJiHun.poeitemvalues.repository.H2DataBaseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class H2DataBaseService {
 
@@ -19,5 +21,9 @@ public class H2DataBaseService {
     public void currencySave(Currency currency) {
         UpdateParamDto updateParamDto = repository.transferCurrencyToUpdateParamDto(currency);
         repository.save(updateParamDto);
+    }
+
+    public List<UpdateParamDto> findAll() {
+        return repository.findAll();
     }
 }
