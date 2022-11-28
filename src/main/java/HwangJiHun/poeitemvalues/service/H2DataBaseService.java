@@ -4,6 +4,7 @@ import HwangJiHun.poeitemvalues.model.ninja.Currency;
 import HwangJiHun.poeitemvalues.model.ninja.dto.database.UpdateParamDto;
 import HwangJiHun.poeitemvalues.repository.H2DataBaseRepository;
 import HwangJiHun.poeitemvalues.repository.ItemType;
+import HwangJiHun.poeitemvalues.repository.mybatis.ItemSearchCond;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,5 +31,9 @@ public class H2DataBaseService {
 
     public List<UpdateParamDto> findByItemType(String itemType) {
         return repository.findByItemType(itemType);
+    }
+
+    public List<UpdateParamDto> findByCond(ItemSearchCond cond) {
+        return repository.findByCond(cond);
     }
 }

@@ -27,6 +27,7 @@ public class UpdateParamDto {
     private int getCurrencyId;
     private Timestamp time;
     private double receiveValue;
+    private int receiveTotalChange;
     private float chaosEquivalent;
     private String detailsId;
 }

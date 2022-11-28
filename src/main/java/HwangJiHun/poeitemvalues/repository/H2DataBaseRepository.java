@@ -2,6 +2,8 @@ package HwangJiHun.poeitemvalues.repository;
 
 import HwangJiHun.poeitemvalues.model.ninja.Currency;
 import HwangJiHun.poeitemvalues.model.ninja.dto.database.UpdateParamDto;
+import HwangJiHun.poeitemvalues.repository.mybatis.ItemSearchCond;
+import HwangJiHun.poeitemvalues.repository.mybatis.UpdateParamDtoMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,11 +20,13 @@ public class H2DataBaseRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+    private final UpdateParamDtoMapper updateParamDtoMapper;
 
-    public H2DataBaseRepository(DataSource dataSource) {
+    public H2DataBaseRepository(DataSource dataSource, UpdateParamDtoMapper updateParamDtoMapper) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.jdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("poeitemvalues");
+        this.updateParamDtoMapper = updateParamDtoMapper;
     }
 
     public void save(UpdateParamDto updateParamDto) {
@@ -46,6 +50,7 @@ public class H2DataBaseRepository {
                     updateParamDto.setGetCurrencyId(rs.getInt("get_currency_id"));
                     updateParamDto.setPayCurrencyId(rs.getInt("pay_currency_id"));
                     updateParamDto.setLeagueId(rs.getInt("league_id"));
+                    updateParamDto.setReceiveTotalChange(rs.getInt("RECEIVE_TOTAL_CHANGE"));
                     return updateParamDto;
                 });
     }
@@ -57,6 +62,10 @@ public class H2DataBaseRepository {
                 .addValue("type", itemType);
 
         return jdbcTemplate.query(sql, param, getUpdateParamDtoBeanPropertyRowMapper());
+    }
+
+    public List<UpdateParamDto> findByCond(ItemSearchCond cond) {
+        return updateParamDtoMapper.findByCond(cond);
     }
 
     private static BeanPropertyRowMapper<UpdateParamDto> getUpdateParamDtoBeanPropertyRowMapper() {
