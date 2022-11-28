@@ -28,16 +28,32 @@ class SchedulerTest {
 
     @Test
     @Transactional
-    @DisplayName("DB 저장 확인")
-    void savePoeItemValues() throws IOException {
+    @DisplayName("DB Currency 저장 확인")
+    void savePoeCurrencyValues() throws IOException {
         CurrencyOverview currencyOverview = ninjaService.getOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.CURRENCY.getTypeName());
         assertThat(currencyOverview).isNotNull();
 
         List<Currency> lines = currencyOverview.getLines();
         for (Currency line : lines) {
-            h2DataBaseService.currencySave(line);
+            h2DataBaseService.currencySave(line, ItemType.CURRENCY.getTypeName());
         }
         h2DataBaseService.findAll().size();
         assertThat(h2DataBaseService.findAll().size()).isEqualTo(currencyOverview.getLines().size());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("DB Fragment 저장 확인")
+    void savePoeFragmentValues() throws IOException {
+        CurrencyOverview currencyOverview = ninjaService.getOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.Fragment.getTypeName());
+        assertThat(currencyOverview).isNotNull();
+
+        List<Currency> lines = currencyOverview.getLines();
+        for (Currency line : lines) {
+            h2DataBaseService.currencySave(line, ItemType.Fragment.getTypeName());
+        }
+
+        int findByItemSize = h2DataBaseService.findByItemType(ItemType.Fragment.getTypeName()).size();
+        assertThat(findByItemSize).isEqualTo(currencyOverview.getLines().size());
     }
 }

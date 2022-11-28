@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 @RequiredArgsConstructor
 public class MyException {
 
+    private Long id;
     private final int projectId;
     private final Timestamp date;
     private final String errorMessage;

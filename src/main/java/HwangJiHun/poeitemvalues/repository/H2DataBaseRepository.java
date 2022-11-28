@@ -2,7 +2,9 @@ package HwangJiHun.poeitemvalues.repository;
 
 import HwangJiHun.poeitemvalues.model.ninja.Currency;
 import HwangJiHun.poeitemvalues.model.ninja.dto.database.UpdateParamDto;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -24,16 +26,6 @@ public class H2DataBaseRepository {
     }
 
     public void save(UpdateParamDto updateParamDto) {
-//        SqlParameterSource param = new MapSqlParameterSource()
-//                .addValue("LEAGUE_ID", currency.getReceive().getLeagueId())
-//                .addValue("TYPE", ApiType.CURRENCY.getTypeName())
-//                .addValue("ITEM_NAME", currency.getCurrencyTypeName())
-//                .addValue("PAY_CURRENCY_ID", currency.getReceive().getPayCurrencyId())
-//                .addValue("GET_CURRENCY_ID", currency.getReceive().getGetCurrencyId())
-//                .addValue("TIME", currency.getReceive().getSampleTimeUtc())
-//                .addValue("RECEIVE_VALUE", currency.getReceive().getValue())
-//                .addValue("CHAOS_EQUIVALENT", currency.getChaosEquivalent())
-//                .addValue("DETAILS_ID", currency.getDetailsId());
         SqlParameterSource param = new BeanPropertySqlParameterSource(updateParamDto);
 
         jdbcInsert.execute(param);
@@ -58,10 +50,23 @@ public class H2DataBaseRepository {
                 });
     }
 
-    public UpdateParamDto transferCurrencyToUpdateParamDto(Currency currency) {
+    public List<UpdateParamDto> findByItemType(String itemType) {
+        String sql = "SELECT * FROM POEITEMVALUES WHERE type = :type";
+
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("type", itemType);
+
+        return jdbcTemplate.query(sql, param, getUpdateParamDtoBeanPropertyRowMapper());
+    }
+
+    private static BeanPropertyRowMapper<UpdateParamDto> getUpdateParamDtoBeanPropertyRowMapper() {
+        return new BeanPropertyRowMapper<>(UpdateParamDto.class);
+    }
+
+    public UpdateParamDto transferCurrencyToUpdateParamDto(Currency currency, String currencyType) {
         UpdateParamDto updateParamDto = new UpdateParamDto();
         updateParamDto.setLeagueId(currency.getReceive().getLeagueId());
-        updateParamDto.setType(ItemType.CURRENCY.getTypeName());
+        updateParamDto.setType(currencyType);
         updateParamDto.setItemName(currency.getCurrencyTypeName());
         updateParamDto.setPayCurrencyId(currency.getReceive().getPayCurrencyId());
         updateParamDto.setGetCurrencyId(currency.getReceive().getGetCurrencyId());
