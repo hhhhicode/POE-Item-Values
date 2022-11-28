@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExceptionService {
 
-    @Autowired
+    final
     ExceptionThrowClient exceptionThrowClient;
+
+    public ExceptionService(ExceptionThrowClient exceptionThrowClient) {
+        this.exceptionThrowClient = exceptionThrowClient;
+    }
 
     /**
      * MyException을 지정한 Exception Center로 보냅니다.

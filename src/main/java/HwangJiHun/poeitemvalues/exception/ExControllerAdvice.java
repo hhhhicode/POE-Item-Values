@@ -23,10 +23,10 @@ public class ExControllerAdvice {
     @Autowired
     ExceptionService exceptionService;
 
-    @ExceptionHandler
-    public String myExHandle(Exception e) {
-        log.info("MyException e = ", e);
-
-        return e.toString();
-    }
+//    @ExceptionHandler
+//    public String myExHandle(Exception e) {
+//        log.info("MyException e = ", e);
+//
+//        return e.toString();
+//    }
 }

@@ -6,6 +6,7 @@ import HwangJiHun.poeitemvalues.repository.ItemType;
 import HwangJiHun.poeitemvalues.repository.OverviewType;
 import HwangJiHun.poeitemvalues.service.H2DataBaseService;
 import HwangJiHun.poeitemvalues.service.NinjaService;
+import HwangJiHun.poeitemvalues.service.PoeCurrencyService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,10 @@ class SchedulerTest {
 
     @Autowired
     private NinjaService ninjaService;
-
     @Autowired
     private H2DataBaseService h2DataBaseService;
+    @Autowired
+    private PoeCurrencyService poeCurrencyService;
 
     @Test
     @Transactional
@@ -55,5 +57,19 @@ class SchedulerTest {
 
         int findByItemSize = h2DataBaseService.findByItemType(ItemType.Fragment.getTypeName()).size();
         assertThat(findByItemSize).isEqualTo(currencyOverview.getLines().size());
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Poe Currency DB 저장")
+    void savePoeCurrencyTest() throws IOException {
+        CurrencyOverview overview = ninjaService.getOverview(OverviewType.ITEMOVERVIEW.getApiEndPoint(), ItemType.CURRENCY.getTypeName());
+        for (Currency currency : overview.getLines()) {
+            poeCurrencyService.saveCurrency(currency, ItemType.CURRENCY.getTypeName());
+        }
+        int dbSize = poeCurrencyService.findAll().size();
+        int overviewSize = overview.getLines().size();
+
+        assertThat(dbSize).isEqualTo(overviewSize);
     }
 }

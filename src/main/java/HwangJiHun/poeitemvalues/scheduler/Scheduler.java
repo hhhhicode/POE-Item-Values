@@ -6,6 +6,7 @@ import HwangJiHun.poeitemvalues.repository.ItemType;
 import HwangJiHun.poeitemvalues.repository.OverviewType;
 import HwangJiHun.poeitemvalues.service.H2DataBaseService;
 import HwangJiHun.poeitemvalues.service.NinjaService;
+import HwangJiHun.poeitemvalues.service.PoeCurrencyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,12 +20,12 @@ import java.util.List;
 public class Scheduler {
 
     private final NinjaService ninjaService;
-    private final H2DataBaseService h2DataBaseService;
+    private final PoeCurrencyService poeCurrencyService;
 
     @Autowired
-    public Scheduler(NinjaService ninjaService, H2DataBaseService h2DataBaseService) {
+    public Scheduler(NinjaService ninjaService, H2DataBaseService h2DataBaseService, PoeCurrencyService poeCurrencyService) {
         this.ninjaService = ninjaService;
-        this.h2DataBaseService = h2DataBaseService;
+        this.poeCurrencyService = poeCurrencyService;
     }
 
     /**
@@ -37,22 +38,24 @@ public class Scheduler {
      * @throws IOException
      */
     @Scheduled(cron = "${my.item.save.cron}")
-    public void savePoeCurrencyValues() throws IOException {
+    public void savePoeCurrencySchedule() throws IOException {
 
         CurrencyOverview currencyOverview = ninjaService.getOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.CURRENCY.getTypeName());
-        List<Currency> lines = currencyOverview.getLines();
-        for (Currency line : lines) {
-            h2DataBaseService.currencySave(line, ItemType.CURRENCY.getTypeName());
+        List<Currency> currencyList = currencyOverview.getLines();
+        for (Currency currency : currencyList) {
+            poeCurrencyService.saveCurrency(currency, ItemType.CURRENCY.getTypeName());
         }
 
         log.info("{} Scheduler Complete !!", Thread.currentThread().getStackTrace()[1].getMethodName());
     }
 
     @Scheduled(cron = "${my.item.save.cron}")
-    public void savePoeFragmentValues() throws IOException {
+    public void savePoeFragmentSchedule() throws IOException {
+
         CurrencyOverview fragmentOverview = ninjaService.getOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.Fragment.getTypeName());
-        for (Currency line : fragmentOverview.getLines()) {
-            h2DataBaseService.currencySave(line, ItemType.Fragment.getTypeName());
+        List<Currency> currencyList = fragmentOverview.getLines();
+        for (Currency currency : currencyList) {
+            poeCurrencyService.saveCurrency(currency, ItemType.Fragment.getTypeName());
         }
 
         log.info("{} Scheduler Complete !!", Thread.currentThread().getStackTrace()[1].getMethodName());

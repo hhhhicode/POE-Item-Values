@@ -6,9 +6,11 @@ import HwangJiHun.poeitemvalues.model.ninja.dto.DivinationCardOverviewDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.CardsDataListDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.TotalChange5Currency;
+import HwangJiHun.poeitemvalues.model.ninja.dto.database.PoeCurrencyDto;
 import HwangJiHun.poeitemvalues.repository.ItemType;
 import HwangJiHun.poeitemvalues.repository.NinjaRepository;
 import HwangJiHun.poeitemvalues.repository.OverviewType;
+import HwangJiHun.poeitemvalues.repository.PoeCurrencyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,11 @@ import java.util.*;
 public class NinjaService {
 
     private final NinjaRepository ninjaRepository;
+    private final PoeCurrencyRepository poeCurrencyRepository;
 
-    public NinjaService(NinjaRepository ninjaRepository) {
+    public NinjaService(NinjaRepository ninjaRepository, PoeCurrencyRepository poeCurrencyRepository) {
         this.ninjaRepository = ninjaRepository;
+        this.poeCurrencyRepository = poeCurrencyRepository;
     }
 
     public CurrencyOverview getOverview(String overviewType, String itemType) throws IOException {
@@ -32,10 +36,12 @@ public class NinjaService {
     public List<CurrencyOverviewDto> getCurrencyOverviewDtoList() throws IOException {
 
         CurrencyOverview currencyOverview = ninjaRepository.getCurrencyOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.CURRENCY.getTypeName());
+
         List<CurrencyOverviewDto> currencyOverviewDtoList = getCurrencyOverviewDtoList(currencyOverview);
 
         return currencyOverviewDtoList;
     }
+
 
     public List<CurrencyOverviewDto> getFragmentOverviewDtoList() throws IOException {
         CurrencyOverview fragmentCurrencyOverview = ninjaRepository.getCurrencyOverview(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.Fragment.getTypeName());
