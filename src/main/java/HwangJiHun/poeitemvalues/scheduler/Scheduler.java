@@ -1,12 +1,15 @@
 package HwangJiHun.poeitemvalues.scheduler;
 
 import HwangJiHun.poeitemvalues.model.ninja.Currency;
+import HwangJiHun.poeitemvalues.model.ninja.CurrencyDetail;
 import HwangJiHun.poeitemvalues.model.ninja.CurrencyOverview;
+import HwangJiHun.poeitemvalues.model.ninja.dto.database.CurrencyDetailsDto;
 import HwangJiHun.poeitemvalues.repository.ItemType;
 import HwangJiHun.poeitemvalues.repository.OverviewType;
 import HwangJiHun.poeitemvalues.service.H2DataBaseService;
 import HwangJiHun.poeitemvalues.service.NinjaService;
 import HwangJiHun.poeitemvalues.service.PoeCurrencyService;
+import HwangJiHun.poeitemvalues.service.ResourceDbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,11 +24,16 @@ public class Scheduler {
 
     private final NinjaService ninjaService;
     private final PoeCurrencyService poeCurrencyService;
+    private final ResourceDbService resourceDbService;
 
     @Autowired
-    public Scheduler(NinjaService ninjaService, H2DataBaseService h2DataBaseService, PoeCurrencyService poeCurrencyService) {
+    public Scheduler(NinjaService ninjaService,
+                     H2DataBaseService h2DataBaseService,
+                     PoeCurrencyService poeCurrencyService,
+                     ResourceDbService resourceDbService) {
         this.ninjaService = ninjaService;
         this.poeCurrencyService = poeCurrencyService;
+        this.resourceDbService = resourceDbService;
     }
 
     /**
@@ -45,8 +53,22 @@ public class Scheduler {
         for (Currency currency : currencyList) {
             poeCurrencyService.saveCurrency(currency, ItemType.CURRENCY.getTypeName());
         }
-
         log.info("{} Scheduler Complete !!", Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        int deleteCount = resourceDbService.deleteAllCurrencyDetails();
+        log.info("{} CurrencyDetails delete Complete !! {}", Thread.currentThread().getStackTrace()[1].getMethodName(), deleteCount);
+        int count = 0;
+        List<CurrencyDetail> currencyDetails = currencyOverview.getCurrencyDetails();
+        for (CurrencyDetail currencyDetail : currencyDetails) {
+            CurrencyDetailsDto currencyDetailsDto = new CurrencyDetailsDto(
+                    currencyDetail.getId(),
+                    currencyDetail.getIcon(),
+                    currencyDetail.getName(),
+                    currencyDetail.getTradeId()
+            );
+            count += resourceDbService.saveCurrencyDetails(currencyDetailsDto);
+        }
+        log.info("{} Scheduler Complete !! {}/{}", Thread.currentThread().getStackTrace()[1].getMethodName(), count, currencyDetails.size());
     }
 
     @Scheduled(cron = "${my.item.save.cron}")

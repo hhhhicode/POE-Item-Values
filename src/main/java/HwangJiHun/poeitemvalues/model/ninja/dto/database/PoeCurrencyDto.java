@@ -9,6 +9,7 @@ public class PoeCurrencyDto {
 
     private Long id;
     private String currencyTypeName;
+
     private Integer payId;
     private Integer payLeagueId;
     private Integer payPayCurrencyId;
@@ -19,6 +20,7 @@ public class PoeCurrencyDto {
     private Integer payDataPointCount;
     private Boolean payIncludesSecondary;
     private Integer payListingCount;
+
     private Integer receiveId;
     private Integer receiveLeagueId;
     private Integer receivePayCurrencyId;
@@ -29,6 +31,7 @@ public class PoeCurrencyDto {
     private Integer receiveDataPointCount;
     private Boolean receiveIncludesSecondary;
     private Integer receiveListingCount;
+
     private Double paySparkLineData0;
     private Double paySparkLineData1;
     private Double paySparkLineData2;
@@ -37,6 +40,7 @@ public class PoeCurrencyDto {
     private Double paySparkLineData5;
     private Double paySparkLineData6;
     private Double paySparkLineTotalChange;
+
     private Double receiveSparkLineData0;
     private Double receiveSparkLineData1;
     private Double receiveSparkLineData2;
@@ -45,7 +49,10 @@ public class PoeCurrencyDto {
     private Double receiveSparkLineData5;
     private Double receiveSparkLineData6;
     private Double receiveSparkLineTotalChange;
+
     private Float chaosEquivalent;
+
     private String detailsId;
+
     private String itemType;
 }

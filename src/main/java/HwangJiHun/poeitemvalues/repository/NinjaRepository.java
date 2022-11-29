@@ -3,6 +3,7 @@ package HwangJiHun.poeitemvalues.repository;
 import HwangJiHun.poeitemvalues.model.ninja.CurrencyOverview;
 import HwangJiHun.poeitemvalues.model.ninja.DivinationCardOverview;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,9 @@ public class NinjaRepository {
         conn.disconnect();
 
         ObjectMapper mapper = new ObjectMapper();
+        //알 수 없는 필드 무시
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES, false);
         /* JSON -> Map */
 //        Map<String, Object> currencyMap = mapper.readValue(sb.toString(), new TypeReference<Map<String, Object>>() {});
 
