@@ -12,13 +12,4 @@ public class ItemSearchCond {
     private Double bottomPrice;
     private Double topPrice;
     private Integer percentage;
-
-    public boolean isCond() {
-
-        if (this.itemName != "" || this.itemName != null || this.bottomPrice != null || this.topPrice != null || this.percentage != null) {
-            return true;
-        }
-
-        return false;
-    }
 }

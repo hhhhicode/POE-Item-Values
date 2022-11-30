@@ -2,8 +2,7 @@ package HwangJiHun.poeitemvalues.repository;
 
 import HwangJiHun.poeitemvalues.model.ninja.Currency;
 import HwangJiHun.poeitemvalues.model.ninja.dto.database.UpdateParamDto;
-import HwangJiHun.poeitemvalues.repository.mybatis.ItemSearchCond;
-import HwangJiHun.poeitemvalues.repository.mybatis.UpdateParamDtoMapper;
+import HwangJiHun.poeitemvalues.repository.mybatis.PoeCurrencyDtoMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -20,13 +19,13 @@ public class H2DataBaseRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
-    private final UpdateParamDtoMapper updateParamDtoMapper;
+    private final PoeCurrencyDtoMapper poeCurrencyDtoMapper;
 
-    public H2DataBaseRepository(DataSource dataSource, UpdateParamDtoMapper updateParamDtoMapper) {
+    public H2DataBaseRepository(DataSource dataSource, PoeCurrencyDtoMapper poeCurrencyDtoMapper) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.jdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("poeitemvalues");
-        this.updateParamDtoMapper = updateParamDtoMapper;
+        this.poeCurrencyDtoMapper = poeCurrencyDtoMapper;
     }
 
     public void save(UpdateParamDto updateParamDto) {
@@ -62,10 +61,6 @@ public class H2DataBaseRepository {
                 .addValue("type", itemType);
 
         return jdbcTemplate.query(sql, param, getUpdateParamDtoBeanPropertyRowMapper());
-    }
-
-    public List<UpdateParamDto> findByCond(ItemSearchCond cond) {
-        return updateParamDtoMapper.findByCond(cond);
     }
 
     private static BeanPropertyRowMapper<UpdateParamDto> getUpdateParamDtoBeanPropertyRowMapper() {

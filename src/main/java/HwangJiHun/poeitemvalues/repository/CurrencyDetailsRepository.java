@@ -3,6 +3,7 @@ package HwangJiHun.poeitemvalues.repository;
 import HwangJiHun.poeitemvalues.model.ninja.dto.database.CurrencyDetailsDto;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -30,8 +31,8 @@ public class CurrencyDetailsRepository {
         return jdbcTemplate.query(sql, getBeanPropertyRowMapper());
     }
 
-    private static BeanPropertyRowMapper getBeanPropertyRowMapper() {
-        return new BeanPropertyRowMapper(CurrencyDetailsDto.class);
+    private static RowMapper<CurrencyDetailsDto> getBeanPropertyRowMapper() {
+        return BeanPropertyRowMapper.newInstance(CurrencyDetailsDto.class);
     }
 
     public int save(CurrencyDetailsDto currencyDetailsDto) {

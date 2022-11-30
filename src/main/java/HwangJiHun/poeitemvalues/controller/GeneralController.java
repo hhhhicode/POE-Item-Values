@@ -30,13 +30,11 @@ public class GeneralController {
     }
 
     @GetMapping("/currency")
-    public String currencyForm(Model model, @ModelAttribute("itemSearchCond")ItemSearchCond itemSearchCond) throws IOException {
-//        List<CurrencyOverviewDto> currencyOverviewDtoList = ninjaService.getCurrencyOverviewDtoList();
-        List<PoeCurrencyDto> poeCurrencyDtoList = poeCurrencyService.findAll();
+    public String currencyForm(Model model, @ModelAttribute("itemSearchCond")ItemSearchCond itemSearchCond) {
+        List<PoeCurrencyDto> poeCurrencyDtoList = poeCurrencyService.findCond(itemSearchCond);
         List<CurrencyOverviewDto> currencyOverviewDtoList = poeCurrencyService.poeCurrencyDtoListToCurrencyOverviewDtoList(poeCurrencyDtoList);
 
         model.addAttribute("currencyOverviewDtoList", currencyOverviewDtoList);
-        log.info("itemSearchCond = {}", itemSearchCond);
 
         return "/general/currency";
     }

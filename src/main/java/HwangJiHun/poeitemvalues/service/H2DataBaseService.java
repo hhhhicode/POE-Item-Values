@@ -34,8 +34,4 @@ public class H2DataBaseService {
     public List<UpdateParamDto> findByItemType(String itemType) {
         return repository.findByItemType(itemType);
     }
-
-    public List<UpdateParamDto> findByCond(ItemSearchCond cond) {
-        return repository.findByCond(cond);
-    }
 }

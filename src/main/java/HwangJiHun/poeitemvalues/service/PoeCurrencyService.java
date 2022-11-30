@@ -5,6 +5,8 @@ import HwangJiHun.poeitemvalues.model.ninja.dto.CurrencyOverviewDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.database.CurrencyDetailsDto;
 import HwangJiHun.poeitemvalues.model.ninja.dto.database.PoeCurrencyDto;
 import HwangJiHun.poeitemvalues.repository.PoeCurrencyRepository;
+import HwangJiHun.poeitemvalues.repository.mybatis.ItemSearchCond;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +17,11 @@ import java.util.List;
 @Service
 public class PoeCurrencyService {
 
-    private final NinjaService ninjaService;
     private final PoeCurrencyRepository poeCurrencyRepository;
     private final ResourceDbService resourceDbService;
 
-    public PoeCurrencyService(NinjaService ninjaService, PoeCurrencyRepository poeCurrencyRepository, ResourceDbService resourceDbService) {
-        this.ninjaService = ninjaService;
+    @Autowired
+    public PoeCurrencyService(PoeCurrencyRepository poeCurrencyRepository, ResourceDbService resourceDbService) {
         this.poeCurrencyRepository = poeCurrencyRepository;
         this.resourceDbService = resourceDbService;
     }
@@ -34,6 +35,10 @@ public class PoeCurrencyService {
 
     public List<PoeCurrencyDto> findAll() {
         return poeCurrencyRepository.findAll();
+    }
+
+    public List<PoeCurrencyDto> findCond(ItemSearchCond cond) {
+        return poeCurrencyRepository.findCond(cond);
     }
 
     public PoeCurrencyDto currencyToPoeCurrencyDto(Currency currency, String itemType) {
@@ -206,9 +211,9 @@ public class PoeCurrencyService {
                 );
     }
 
-    private static CurrencyDetailsDto getCurrencyDetails(List<CurrencyDetailsDto> currencyDetailsDtoList, Integer poeCurrencyDto) {
+    private static CurrencyDetailsDto getCurrencyDetails(List<CurrencyDetailsDto> currencyDetailsDtoList, Integer currencyId) {
         CurrencyDetailsDto buyPayCurrencyDetails = currencyDetailsDtoList.stream()
-                .filter(o -> o.getId() == poeCurrencyDto)
+                .filter(o -> o.getId().equals(currencyId))
                 .findAny()
                 .orElse(null);
         return buyPayCurrencyDetails;
@@ -216,13 +221,22 @@ public class PoeCurrencyService {
 
     private static CurrencyDetailsDto getTargetItemCurrencyDetails(List<CurrencyDetailsDto> currencyDetailsDtoList, PoeCurrencyDto poeCurrencyDto) {
         CurrencyDetailsDto currencyDetails = currencyDetailsDtoList.stream()
-                .filter(o -> o.getName() == poeCurrencyDto.getCurrencyTypeName())
+                .filter(o -> o.getName().equals(poeCurrencyDto.getCurrencyTypeName()))
                 .findAny()
                 .orElse(null);
         return currencyDetails;
     }
 
-    private static CurrencyOverviewDto getCurrencyOverviewDto(PoeCurrencyDto poeCurrencyDto, CurrencyDetailsDto currencyDetails, CurrencyDetailsDto buyPayCurrencyDetails, CurrencyDetailsDto buyGetCurrencyDetails, String buyPayValue, String buyReceiveValue, String buyChartId, List<Double> buyChartDataList, String buyTotalChange, CurrencyDetailsDto sellPayCurrencyDetails, String sellPayValue, CurrencyDetailsDto sellGetCurrencyDetails, String sellReceiveValue, String sellChartId, List<Double> sellChartDataList, String sellTotalChange) {
+    private static CurrencyOverviewDto getCurrencyOverviewDto(
+            PoeCurrencyDto poeCurrencyDto,
+            CurrencyDetailsDto currencyDetails,
+            CurrencyDetailsDto buyPayCurrencyDetails, CurrencyDetailsDto buyGetCurrencyDetails,
+            String buyPayValue, String buyReceiveValue,
+            String buyChartId, List<Double> buyChartDataList, String buyTotalChange,
+            CurrencyDetailsDto sellPayCurrencyDetails, String sellPayValue,
+            CurrencyDetailsDto sellGetCurrencyDetails, String sellReceiveValue,
+            String sellChartId, List<Double> sellChartDataList, String sellTotalChange) {
+
         CurrencyOverviewDto currencyOverviewDto = new CurrencyOverviewDto
                 (
                         poeCurrencyDto.getCurrencyTypeName(),
@@ -244,9 +258,9 @@ public class PoeCurrencyService {
                         sellPayValue,
                         sellPayCurrencyDetails != null ? sellPayCurrencyDetails.getIcon() : null,
 
-                        sellGetCurrencyDetails.getName(),
+                        sellGetCurrencyDetails != null ? sellGetCurrencyDetails.getName(): null,
                         sellReceiveValue,
-                        sellGetCurrencyDetails.getIcon(),
+                        sellGetCurrencyDetails != null ? sellGetCurrencyDetails.getIcon() : null,
 
                         sellChartId,
                         sellChartDataList,
