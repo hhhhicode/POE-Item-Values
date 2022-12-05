@@ -15,5 +15,4 @@ public class PoeitemvaluesApplication {
 	}
 }
 
-//TODO Home 화면에 fragment max min cards 추가
-//TODO Home 화면에 divination card max min cards 추가
+

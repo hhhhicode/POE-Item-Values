@@ -7,7 +7,7 @@
 <body>
 
 <nav th:fragment="common_top_bar" class="navbar navbar-expand-lg navbar-dark bg-primary" style="width: 100%">
-    <div class="container-fluid">
+    <div class="container-fluid" th:object="${loginMember}">
         <a class="navbar-brand" th:href="@{/}" th:text="|P.I.V|">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,9 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/members/add}">회원가입</a>
+                    <a th:unless="${#session}" class="nav-link" th:href="@{/members/add}">회원가입</a>
+                    <!--/*@thymesVar id="userName" type="HwangJiHun.poeitemvalues.model.members.MemberSessionDto"*/-->
+                    <a class="nav-link" href="#" th:if="${#session}" th:text="${#session.getAttribute('memberSessionDto').userName}">이름</a>
                 </li>
             </ul>
         </div>

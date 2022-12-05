@@ -1,25 +1,35 @@
 package HwangJiHun.poeitemvalues.controller;
 
+import HwangJiHun.poeitemvalues.domain.members.MemberConst;
+import HwangJiHun.poeitemvalues.model.members.Member;
 import HwangJiHun.poeitemvalues.model.ninja.dto.CardsDataListDto;
 import HwangJiHun.poeitemvalues.repository.OverviewType;
 import HwangJiHun.poeitemvalues.repository.ItemType;
+import HwangJiHun.poeitemvalues.service.MemberService;
 import HwangJiHun.poeitemvalues.service.NinjaService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 public class HomeController {
 
-    @Autowired
     private final NinjaService ninjaService;
+    private final MemberService memberService;
+
+    public HomeController(NinjaService ninjaService, MemberService memberService) {
+        this.ninjaService = ninjaService;
+        this.memberService = memberService;
+    }
 
     @GetMapping("/")
     public String home(Model model) throws IOException {
@@ -29,7 +39,6 @@ public class HomeController {
 
         CardsDataListDto fragmentCardsDataListDto = ninjaService.getTop5CardsData(OverviewType.CURRENCYOVERVIEW.getApiEndPoint(), ItemType.Fragment.getTypeName());
         model.addAttribute("fragmentCardsDataListDto", fragmentCardsDataListDto);
-
 
         return "/home";
     }
