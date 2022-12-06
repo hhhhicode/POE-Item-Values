@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,6 +65,19 @@ public class MemberController {
             HttpSession session = request.getSession(true);
             session.setAttribute(MemberConst.MEMBER_SESSION_DTO, memberSessionDto);
         }
+
+        return "redirect:" + homeUri;
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        MemberSessionDto memberSessionDto = (MemberSessionDto) session.getAttribute("memberSessionDto");
+        if (session != null) {
+            session.invalidate();
+        }
+
+        memberService.logout(memberSessionDto.getUserId());
 
         return "redirect:" + homeUri;
     }

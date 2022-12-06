@@ -22,4 +22,12 @@ public class MemberService {
     public Optional<Member> findById(Long id) {
         return repository.findById(id);
     }
+
+    public boolean logout(String userId) {
+        int updateNum = repository.logout(userId);
+        if (updateNum == 0) {
+            return false;
+        }
+        return true;
+    }
 }
