@@ -14,4 +14,5 @@ public class Member {
     private String emailAddress;
     private String displayPrograms;
     private String memo;
+    private String login;
 }

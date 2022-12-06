@@ -30,7 +30,7 @@ public class H2MemberRepository {
         String sql = "SELECT * FROM members WHERE user_id = :userId";
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("userId", userid);
-
+        Member member = jdbcTemplate.queryForObject(sql, param, getMemberRowMapper());
         return Optional.of(jdbcTemplate.queryForObject(sql, param, getMemberRowMapper()));
     }
 

@@ -5,6 +5,7 @@ import HwangJiHun.poeitemvalues.domain.members.MemberConst;
 import HwangJiHun.poeitemvalues.model.members.Member;
 import HwangJiHun.poeitemvalues.model.members.MemberSessionDto;
 import HwangJiHun.poeitemvalues.service.MemberService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,22 +28,32 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    @Value("${homeUri}")
+    private String homeUri;
+    @Value("${memberUri}")
+    private String memberUri;
+
     @GetMapping("/add")
     public String memberAdd(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute(MemberConst.HOME_URI, "http://localhost:8080");
-        redirectAttributes.addAttribute(MemberConst.LOGIN_URI, "http://localhost:8080/members/login");
-        return "redirect:http://localhost:8091/members/add";
+        redirectAttributes.addAttribute(MemberConst.HOME_URI, homeUri);
+        redirectAttributes.addAttribute(MemberConst.LOGIN_URI, homeUri + "/members/login/logic");
+        return "redirect:" + memberUri + "/members/add";
     }
 
     @GetMapping("/login")
+    public String loginForm(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute(MemberConst.LOGIN_URI, homeUri + "/members/login/logic");
+        return "redirect:" + memberUri + "/members/login";
+    }
+
+    @GetMapping("/login/logic")
     public String login(HttpServletRequest request,
                         @RequestParam(required = false) String homeUri,
-                        @RequestParam(required = false) String userId) {
+                        @RequestParam(required = false) String loginId) {
 
-        Optional<Member> loginMember = memberService.findByUserId(userId);
+        Optional<Member> loginMember = memberService.findByUserId(loginId);
         if (loginMember.isPresent()) {
             Member member = loginMember.get();
-            Long id = member.getId();
             MemberSessionDto memberSessionDto = new MemberSessionDto();
             memberSessionDto.setUserId(member.getUserId());
             memberSessionDto.setUserName(member.getUserName());
