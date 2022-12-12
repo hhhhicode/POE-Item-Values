@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +42,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginForm(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute(MemberConst.HOME_URI, homeUri);
         redirectAttributes.addAttribute(MemberConst.LOGIN_URI, homeUri + "/members/login/logic");
         return "redirect:" + memberUri + "/members/login";
     }
@@ -67,6 +67,17 @@ public class MemberController {
         }
 
         return "redirect:" + homeUri;
+    }
+
+    @GetMapping("/profile")
+    public String profile(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+
+        HttpSession session = request.getSession(false);
+        MemberSessionDto memberSessionDto = (MemberSessionDto) session.getAttribute(MemberConst.MEMBER_SESSION_DTO);
+        redirectAttributes.addAttribute("userId", memberSessionDto.getUserId());
+        redirectAttributes.addAttribute(MemberConst.HOME_URI, homeUri);
+
+        return "redirect:" + memberUri + "/members/{userId}/profile";
     }
 
     @GetMapping("/logout")

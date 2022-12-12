@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HwangJiHun.poeitemvalues.repository.mybatis.PoeCurrencyDtoMapper">
+    <select id="findByCond" resultType="PoeCurrencyDto">
+        select *
+        from POE_CURRENCY
+        <where>
+            <if test = "true">
+                and ITEM_TYPE = 'Currency'
+            </if>
+            <if test = "true">
+                and RECEIVE_SAMPLE_TIME_UTC =
+                (SELECT
+                    RECEIVE_SAMPLE_TIME_UTC
+                FROM POE_CURRENCY
+                WHERE ITEM_TYPE = 'Currency'
+                ORDER BY RECEIVE_SAMPLE_TIME_UTC DESC
+                LIMIT 1)
+            </if>
+            <if test="itemName != null and itemName != ''">
+                and CURRENCY_TYPE_NAME  like concat('%',#{itemName},'%')
+            </if>
+            <if test="bottomPrice != null">
+                and RECEIVE_VALUE &gt;= #{bottomPrice}
+            </if>
+            <if test="topPrice != null">
+                and RECEIVE_VALUE &lt;= #{topPrice}
+            </if>
+            <if test="percentage != null">
+                and RECEIVE_SPARK_LINE_TOTAL_CHANGE &gt;= #{percentage}
+            </if>
+        </where>
+    </select>
+</mapper>

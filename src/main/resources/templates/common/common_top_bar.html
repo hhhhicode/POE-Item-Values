@@ -7,7 +7,7 @@
 <body>
 
 <nav th:fragment="common_top_bar" class="navbar navbar-expand-lg navbar-dark bg-primary" style="width: 100%">
-    <div class="container-fluid" th:object="${loginMember}">
+    <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}" th:text="|P.I.V|">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -39,22 +39,22 @@
                         <a class="dropdown-item" href="#">Separated link</a>
                     </div>
                 </li>
-                <th:block th:if="${#session == null}">
+                <th:block th:if="${#session == null or #session.getAttribute('memberSessionDto') == null}">
                     <li id="li1" class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">계정</a>
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" th:href="@{/members/add}">회원가입</a>
-                            <a class="dropdown-item" th:href="@{/members/login}">로그인</a>
+                            <a class="dropdown-item" th:href="@{/members/add}">Sign Up</a>
+                            <a class="dropdown-item" th:href="@{/members/login}">Log In</a>
                         </div>
                     </li>
                 </th:block>
-                <th:block th:if="${#session != null}">
+                <th:block th:if="${#session != null and #session.getAttribute('memberSessionDto') != null}">
                     <li id="li2" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
                            th:text="${#session.getAttribute('memberSessionDto').userName}">이름</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">프로필</a>
-                            <a class="dropdown-item" th:href="@{/members/logout}">로그아웃</a>
+                            <a class="dropdown-item" th:href="@{/members/profile}">Profile</a>
+                            <a class="dropdown-item" th:href="@{/members/logout}">Log Out</a>
                         </div>
                     </li>
                 </th:block>

@@ -44,7 +44,7 @@ public class GeneralController {
 
         model.addAttribute("currencyOverviewDtoList", currencyOverviewDtoList);
 
-        return "/general/currency";
+        return "general/currency";
     }
 
     @GetMapping("/fragment")
@@ -53,7 +53,7 @@ public class GeneralController {
 
         model.addAttribute("fragmentOverviewDtoList", fragmentOverviewDtoList);
 
-        return "/general/fragment";
+        return "general/fragment";
     }
 
     @GetMapping("/divinationcard")
@@ -62,6 +62,6 @@ public class GeneralController {
 
         model.addAttribute("divinationcardOverviewDtoList", divinationcardOverviewDtoList);
 
-        return "/general/divinationcard";
+        return "general/divinationcard";
     }
 }

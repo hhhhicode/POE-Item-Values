@@ -16,14 +16,14 @@
     <header style="width: 100%">
         <div style="display: flex; flex: 1 0 auto; width: 100%">
             <!-- Top bar -->
-            <nav th:replace="~{common/common_top_bar(loginMember)}"></nav>
+            <nav th:replace="~{common/common_top_bar :: common_top_bar}"></nav>
         </div>
     </header>
 
     <!-- Content Wrapper -->
     <div style="width: 100%; display: flex; flex-direction: row;">
         <!--Side Bar-->
-        <ul th:replace="~{common/common_side_bar}"></ul>
+        <ul th:replace="~{common/common_side_bar :: common_side_bar4}"></ul>
 
         <!-- Main Content -->
         <div class="mainContainer" style="user-select: auto; min-height: 100vh; padding: .5rem;">

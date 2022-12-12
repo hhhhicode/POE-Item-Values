@@ -16,14 +16,14 @@
     <header style="width: 100%">
         <div style="display: flex; flex: 1 0 auto; width: 100%">
             <!-- Top bar -->
-            <nav th:replace="~{common/common_top_bar}"></nav>
+            <nav th:replace="~{common/common_top_bar :: common_top_bar}"></nav>
         </div>
     </header>
 
     <!-- Content Wrapper -->
     <div style="width: 100%; display: flex; flex-direction: row;">
         <!--Side Bar-->
-        <ul th:replace="~{common/common_side_bar}"></ul>
+        <ul th:replace="~{common/common_side_bar :: common_side_bar4}"></ul>
 
         <!-- Main Content -->
         <div class="mainContainer" style="user-select: auto; min-height: 100vh; padding: .5rem;">
@@ -33,14 +33,28 @@
                     <main style="overflow: auto;">
                         <section
                                 style="display: grid; grid-template-rows: auto minmax(0px, 1fr); background-clip: padding-box; overflow: hidden; border-radius: .375rem">
-                            <div style="padding: .75rem; overflow: auto; ">
+                            <!--Search Bar-->
+                            <div id="search-bar">
+                                <div>
+                                    <form action="currency.html" th:action
+                                          method="get"
+                                          th:object="${itemSearchCond}"
+                                          class="d-flex" style="align-items: center;">
+                                        <input th:field="*{itemName}" id="itemName" class="form-control me-sm-2" type="text" placeholder="이름">
+                                        <input th:field="*{bottomPrice}" id="bottomPrice" class="form-control me-sm-2" type="text" placeholder="최저값">
+                                        <input th:field="*{topPrice}" id="topPrice" class="form-control me-sm-2" type="text" placeholder="최고값">
+                                        <input th:field="*{percentage}" id="percentage" class="form-control me-sm-2" type="text" placeholder="증감률">
+                                        <button id="submitButton" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div style="padding: .75rem; overflow-y: hidden; overflow-x: auto">
                                 <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1.5rem">
                                     <div style="display: flex; flex-direction: column; -webkit-box-pack: start; justify-content: flex-start; gap: 1rem">
-                                        <div></div>
-                                        <div>
+                                        <div id="table">
                                             <small style="font-style: italic; font-size: 1rem; display: block; text-align: right; padding-block: .25rem">(scroll
                                                 to see more)</small>
-                                            <div style="overflow: auto;">
+                                            <div>
                                                 <!--CurrencyTable-->
                                                 <table class="table table-hover"
                                                        style="user-select: auto; width: 100%;"

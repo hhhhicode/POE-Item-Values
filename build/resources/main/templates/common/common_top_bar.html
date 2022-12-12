@@ -13,6 +13,10 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
+            <form class="d-flex">
+                <input class="form-control me-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Home
@@ -25,9 +29,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                     <div class="dropdown-menu">
@@ -38,11 +39,26 @@
                         <a class="dropdown-item" href="#">Separated link</a>
                     </div>
                 </li>
+                <th:block th:if="${#session == null or #session.getAttribute('memberSessionDto') == null}">
+                    <li id="li1" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/members/add}">Sign Up</a>
+                            <a class="dropdown-item" th:href="@{/members/login}">Log In</a>
+                        </div>
+                    </li>
+                </th:block>
+                <th:block th:if="${#session != null and #session.getAttribute('memberSessionDto') != null}">
+                    <li id="li2" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
+                           th:text="${#session.getAttribute('memberSessionDto').userName}">이름</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/members/profile}">Profile</a>
+                            <a class="dropdown-item" th:href="@{/members/logout}">Log Out</a>
+                        </div>
+                    </li>
+                </th:block>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
         </div>
     </div>
 </nav>

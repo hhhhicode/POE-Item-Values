@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="HwangJiHun.poeitemvalues.JavaTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-12T02:31:26" hostname="DESKTOP-PCVPH1C" time="0.03">
+  <properties/>
+  <testcase name="javaTest()" classname="HwangJiHun.poeitemvalues.JavaTest" time="0.03"/>
+  <system-out><![CDATA[result = Id
+currencyTypeName
+payId
+payLeagueId
+payPayCurrencyId
+payGetCurrencyId
+paySampleTimeUtc
+payCount
+payValue
+payDataPointCount
+payIncludesSecondary
+payListingCount
+receiveId
+receiveLeagueId
+receivePayCurrencyId
+receiveGetCurrencyId
+receiveSampleTimeUtc
+receiveCount
+receiveValue
+receiveDataPointCount
+receiveIncludesSecondary
+receiveListingCount
+paySparkLineData0
+paySparkLineData1
+paySparkLineData2
+paySparkLineData3
+paySparkLineData4
+paySparkLineData5
+paySparkLineData6
+paySparkLineTotalChange
+receiveSparkLineData0
+receiveSparkLineData1
+receiveSparkLineData2
+receiveSparkLineData3
+receiveSparkLineData4
+receiveSparkLineData5
+receiveSparkLineData6
+receiveSparkLineTotalChange
+chaosEquivalent
+detailsId
+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
